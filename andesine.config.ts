@@ -5,7 +5,7 @@ export default defineConfig({
   description: "Documentation for Andesine, the versatile content workspace.",
   site: "https://andesine.app",
   base: "/docs/",
-  logo: { src: "./src/assets/andesine.svg", format: "full", alt: "Andesine" },
+  logo: { src: "./src/assets/andesine.svg", format: "full", alt: "Andesine", title: false },
   favicon: "./src/assets/favicon.svg",
   brand: { primary: "#ff3617", secondary: "#f88f52", tertiary: "#fc6335" },
   links: [

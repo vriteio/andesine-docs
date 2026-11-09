@@ -11,3 +11,6 @@ dist
 # Platform folders
 .vercel
 .netlify
+
+# macOS
+.DS_Store
