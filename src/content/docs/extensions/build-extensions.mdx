@@ -1,0 +1,127 @@
+---
+title: Build extensions
+description: Create an extension with panels, pages, element views, and a
+  backend, and publish it to the extension registry.
+---
+
+Extensions are TypeScript projects. The frontend is made of Solid.js views that run in a sandbox: they render Andesine's own components, so extensions look like the rest of the app and cannot access the page. An optional backend, which you host, can receive webhooks and call the API.
+
+## Create a project
+
+```sh
+npx andesine extensions init hello --name acme/hello
+cd hello
+npm install
+```
+
+The project has examples of the main features: element views, a block action, a panel that calls its backend, settings, and webhooks. The name has the form `scope/name`.
+
+| File                 | Holds                                                       |
+| -------------------- | ----------------------------------------------------------- |
+| `andesine.config.ts` | The manifest: name, version, permissions, and contributions |
+| `src/views.tsx`      | The views of the frontend                                   |
+| `andesine.keys.json` | The public keys of the backend                              |
+
+## The manifest
+
+`andesine.config.ts` describes the extension with `defineExtension`:
+
+```ts
+import { defineExtension, viewRefs } from "@andesine/extensions";
+import type { Views } from "./src/views";
+
+const View = viewRefs<Views>();
+
+export default defineExtension({
+  name: "acme/hello",
+  version: "0.1.0",
+  displayName: "Hello",
+  description: "Says hello next to the editor.",
+  icon: "i-lucide:hand",
+  apiVersion: 1,
+  permissions: ["read:entries"],
+  panels: [{ id: "hello", side: "right", name: "Hello", icon: "i-lucide:hand", view: View.Hello }]
+});
+```
+
+## Contributions
+
+| Contribution  | Shows                                                                         |
+| ------------- | ----------------------------------------------------------------------------- |
+| Panels        | A panel next to the editor, for the workspace, a collection, or an entry      |
+| Pages         | A page in the main area: in the menu, or in the menu of a collection or entry |
+| Element views | A view of an element, such as `<Accordion>`, in the editor                    |
+| Block actions | An action in the block menu that can read and replace the selected blocks     |
+| Settings      | Settings that members fill in when they install the extension                 |
+| Webhooks      | Events that Andesine sends to your backend                                    |
+
+## Views
+
+Views are Solid components that use the components of `@andesine/extensions/solid`, such as `Stack`, `Text`, `Button`, `Section`, and `Setting`:
+
+```tsx
+import { Button, Stack, Text, defineViews, notify } from "@andesine/extensions/solid";
+
+const Hello = () => (
+  <Stack gap="small">
+    <Text>Hello from an extension.</Text>
+    <Button onClick={() => notify("Hello!")}>Say hello</Button>
+  </Stack>
+);
+
+const views = defineViews({ Hello });
+
+export type Views = typeof views;
+export default views;
+```
+
+An element view gets the element's props and shows its editable content with `ContentSlot`. Views can also copy text, download files, open URLs, open pages, and show notifications.
+
+## API and backend
+
+Views call the Andesine API with the SDK. Requests use the member's session, limited to the permissions of the extension:
+
+```ts
+import { createClient } from "@andesine/sdk";
+import { EXTENSION_API_URL, apiFetch, backend } from "@andesine/extensions/solid";
+
+const client = createClient({ baseURL: EXTENSION_API_URL, fetch: apiFetch });
+const response = await backend.fetch("/publish", { method: "POST" });
+```
+
+`backend.fetch` calls your backend with a short-lived token that the backend verifies with Andesine. The backend signs its own API requests with its private key; generate the key pair with `npx andesine extensions keys generate`. Only the public key goes into the project.
+
+## Develop locally
+
+Extensions are developed against a local Andesine instance. See [Self-hosting](/docs/self-hosting/) to run one, and set `EXTENSIONS_DEVELOPMENT_ENABLED=true` on its backend.
+
+```sh
+npx andesine --base-url http://localhost:43211 auth login
+npx andesine --base-url http://localhost:43211 --workspace ws_... extensions dev
+```
+
+`extensions dev` installs the extension for you only, and rebuilds and reloads it on each change. If a change asks for more permissions, approve it in **Settings → Extensions**. To send a sample event to a webhook, run `npx andesine extensions test-event <webhook> <type>`. Run `extensions dev --remove` to uninstall it.
+
+`npx andesine extensions build` checks the manifest and builds the extension into `dist/`.
+
+## Publish to the registry
+
+Extensions are published in the public registry at `extensions.andesine.app`, from the [vriteio/extensions](https://github.com/vriteio/extensions) repository. Every version is reviewed.
+
+<Steps>
+  <Step title="Prepare the extension">
+    Set the backend URL to its `https` address, and make sure the backend runs with its private key. Add `andesine.registry.json` with your publisher name and URL.
+  </Step>
+
+  <Step title="Open a pull request">
+    Add the project to `extensions/<scope>/<name>` in the registry repository, with `package-lock.json`. For a new version, increase `version` in the manifest.
+  </Step>
+
+  <Step title="Pass the checks and the review">
+    CI checks the manifest, the keys, and the version. After the review and the merge, the new version is published and appears in the catalog of all workspaces.
+  </Step>
+</Steps>
+
+Published versions never change. To fix a version, publish a new one. To withdraw a version, add it to `registry/revocations.json` with a replacement version; workspaces move to the replacement.
+
+To rotate a backend key, add the new key with `keys generate`, deploy the backend with it, and then remove the old key with `keys revoke <key-id>` in a second pull request.

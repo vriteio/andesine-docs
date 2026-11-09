@@ -1,0 +1,582 @@
+{
+  "version": 1,
+  "files": {
+    "src/content/docs/ai-agents/connect-an-ai-app.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "ed3fe3d7de0683fd",
+          "to": "583db847402347f2",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/ai-agents/local-server-and-plugin.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "fc1fdda6dfc5e37f",
+          "to": "ae1fd1616f797099",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/ai-agents/tools-resources-and-prompts.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "8d0f189dfb7f04ed",
+          "to": "b8e8669b7391103d",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/developers/api-overview.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "c3ad7fbe837ae5f7",
+          "to": "bb5bfb468f49991a",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/developers/cli.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "9e787a9ccac4fa9e",
+          "to": "2fd9705a0d62393a",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/developers/content-types.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "a5e4cd8ec3056cf8",
+          "to": "9c0f28eda0b0eb11",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/developers/converters.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "a3e0e2b4d062f1af",
+          "to": "8fa86bf858fbcbf8",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/developers/sdk.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "c075e16e7f19891c",
+          "to": "4a6e2be598ef3510",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/developers/webhooks.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "15a25b560a546daf",
+          "to": "da4ac9535523033c",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/extensions/build-extensions.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "6a70e232534201ee",
+          "to": "1fa37a0635105f6a",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/extensions/use-extensions.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "198fbaf24231c0a4",
+          "to": "63afa869d4c1f227",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/getting-started/core-concepts.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "ae30103ebfa7a28f",
+          "to": "393a7c5161d1474e",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/getting-started/quickstart.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "88139b2ee3e2c416",
+          "to": "1a020815c3f77922",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/index.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "bd17775e70909573",
+          "to": "3bbe6cd52248838e",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ],
+      "rootTitle": "Introduction"
+    },
+    "src/content/docs/organizing-content/collections-and-entries.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "7fd3bcb4c13e6dde",
+          "to": "d5787613d99a3bc2",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/organizing-content/schemas.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "d75ef05116e68e57",
+          "to": "08907ecaac83985e",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/organizing-content/search-and-ask-ai.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "96e74411d23db72a",
+          "to": "2f139f37caf1322a",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/organizing-content/versions.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "d923a82339567e8b",
+          "to": "26a66e3ea5d2fe17",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/publishing/github-sync.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "5f125b2db60f0874",
+          "to": "bd3423870cbd8073",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/publishing/hosted-sites.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "3866139b88453dad",
+          "to": "452f0ac6e37c41ed",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/publishing/pages-framework.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "04fa6e79b2c11ba7",
+          "to": "1d85094528eabed7",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/publishing/publishing-and-channels.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "be99a95949f77e1b",
+          "to": "5b52646448271ef6",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/self-hosting.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "32a8bbdef39cd2d5",
+          "to": "6456ff8ae735f17a",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/workspace-administration/account-and-security.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "d4f3536117c25c48",
+          "to": "687498eb4e3ef040",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/workspace-administration/members-and-invitations.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "b765dfd109b3ad86",
+          "to": "6592f4b712ae9e20",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/workspace-administration/plans-and-billing.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "afd2ce988dbfc850",
+          "to": "1a60f7a3bc2df8e1",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/workspace-administration/roles-and-permissions.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "ec954ec020f0a066",
+          "to": "1f7fc370dc5582ff",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/writing/collaboration-and-offline.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "dd844032e2b8c12a",
+          "to": "841df0688aeb0192",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/writing/editor.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "de53f15ea2bafeae",
+          "to": "f504c0754e66816f",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/writing/elements.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "114edc0f306d57aa",
+          "to": "469e940c6b4b403b",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/writing/images.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "04c759483d113dab",
+          "to": "736b439fd3e017a0",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
+    "src/content/docs/writing/keyboard-shortcuts.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "3601a892a7220b46",
+          "to": "a19bf9082344a462",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    }
+  }
+}

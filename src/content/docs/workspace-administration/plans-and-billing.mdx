@@ -1,0 +1,61 @@
+---
+title: Plans and billing
+description: Compare the Free and Pro plans, and manage your subscription,
+  usage, and spending limit.
+---
+
+Each workspace has its own plan. Go to **Settings → Billing** to see the plan, the usage, and the invoices. You need a role with the **Billing** permission.
+
+## Plans
+
+|                                              | Free                       | Pro                             |
+| -------------------------------------------- | -------------------------- | ------------------------------- |
+| Price                                        | $0                         | $12 per seat each month         |
+| Members                                      | Up to 3, all admins        | Unlimited                       |
+| Custom roles, groups, restricted collections | No                         | Yes                             |
+| API calls each month                         | 50,000                     | 150,000 for each seat           |
+| AI credits each month                        | 5,000                      | 15,000 for each seat            |
+| Version history                              | 7 days                     | 30 days                         |
+| Image storage                                | 1 GiB                      | 50 GiB                          |
+| Hosted sites                                 | With a "Powered by" credit | Custom domains, no credit       |
+| GitHub Sync                                  | Public repositories        | Public and private repositories |
+
+On the Pro plan, each member is a seat. The included API calls and AI credits of all seats are shared by the whole workspace. Usage over the included amount costs $1 for each 50,000 API calls and $1 for each 5,000 AI credits.
+
+On the Free plan, the limits are hard limits. When the workspace reaches one, the API or AI answers stop until the next month.
+
+## What counts as usage
+
+- **API calls:** requests from the API, the SDK, the CLI, MCP clients, and your sites. Using the app does not count.
+- **AI credits:** an AI answer uses 10 credits, and a semantic search uses 1. See [Search and Ask AI](/docs/organizing-content/search-and-ask-ai/).
+
+The **Usage** section shows the use of the current month, and **History** shows earlier months.
+
+## Upgrade to Pro
+
+Select **Upgrade** and complete the checkout. The subscription renews on the first day of each month (UTC). The first payment covers the rest of the current month. You can enter a business name, a tax ID, and a promotion code at checkout.
+
+## Seats
+
+When you add members, Andesine adds seats to the subscription and charges a prorated amount for the rest of the month. Apps and AI agents never use a seat.
+
+## Spending limit
+
+Usage over the included amount is billed at the end of the month. To control it, select **Set spending limit** and type a monthly amount. When the workspace reaches the limit, the API stops and Ask AI shows **Spending limit reached** until the next month or until you raise the limit. With no limit, all usage is billed.
+
+## Manage the subscription
+
+Select **Manage subscription** to open the billing portal. There you can change the payment method, update the billing details, download invoices, and cancel.
+
+When you cancel, the workspace stays on Pro until the end of the billing period, and then moves to Free. Payments are not refunded. If a payment fails and stays unpaid, the workspace also moves to Free.
+
+When a workspace moves to Free:
+
+- The Free limits apply.
+- Pending invitations are revoked.
+- Automatic versions older than 7 days are deleted.
+- Custom domains of hosted sites stop working. They work again after you upgrade.
+
+## Self-hosted Andesine
+
+Self-hosted instances have no billing, and all features of the Pro plan.

@@ -1,0 +1,69 @@
+---
+title: Content types
+description: Generate TypeScript types from your collection schemas, and keep
+  them up to date in CI.
+---
+
+The CLI can generate TypeScript types from the schemas of your collections. With them, the SDK knows the properties and fragments of each collection, so your editor completes field names and finds mistakes.
+
+## Generate types
+
+1. Run `npx andesine init` and choose the content source, the collections, and the output file. See [CLI](/docs/developers/cli/).
+2. Run:
+
+```sh
+npx andesine types generate
+```
+
+The default output file is `src/andesine.generated.ts`. Commit it with your code.
+
+## Use the types
+
+The generated file exports a `Workspace` type for the client, and types for each collection, such as `TutorialsCollection`, `TutorialsCollectionContent`, and `TutorialsCollectionStructuredContent`:
+
+```ts
+import { createClient, toStructuredContent } from "@andesine/sdk";
+import type { Workspace } from "./andesine.generated";
+
+const client = createClient<Workspace>({ apiKey: process.env.ANDESINE_API_KEY });
+const page = await client.content.get({ path: "/Tutorials/Welcome", channel: "published" });
+const { properties } = toStructuredContent(page);
+```
+
+How fields become types:
+
+- Required fields are required keys. Optional fields are optional keys.
+- Numbers are `number | null`. A select is one of its options or `""`. A multi-select is an array of its options.
+- Fragments allow only the block types of the fragment.
+- Elements have general types, because schemas do not define them.
+
+## Options
+
+| Option                  | Does                                                   |
+| ----------------------- | ------------------------------------------------------ |
+| `--source current`      | Uses the current schemas instead of the published ones |
+| `--snapshot snp_...`    | Uses the schemas of one fixed publish                  |
+| `--collection /Docs`    | Limits the types to collections, by path or ID         |
+| `--include-entry-paths` | Adds the paths of the entries as types                 |
+| `--include-entry-ids`   | Adds the IDs of the entries as types                   |
+| `--include-tree`        | Adds the order of the collection tree as types         |
+
+Flags apply only to that run. Use `andesine init` to save them.
+
+## Keep types up to date
+
+Check in CI that the committed types match the schemas. Set `ANDESINE_API_KEY` as a secret, and run:
+
+```sh
+npx andesine types generate --check
+```
+
+The command exits with code `3` when the types are missing or out of date, and writes no files.
+
+While you work, regenerate the types when a schema changes:
+
+```sh
+npx andesine types generate --watch
+```
+
+Watch mode checks every 10 seconds. Use `--interval` to change it.

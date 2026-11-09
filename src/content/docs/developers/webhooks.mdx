@@ -1,0 +1,84 @@
+---
+title: Webhooks
+description: Get HTTP requests when content changes or is published, and verify
+  them in your server.
+---
+
+Webhooks send an HTTP request to your server when something changes in the workspace. Use them to rebuild a site after a publish, update a search index, or notify a chat.
+
+## Create a webhook
+
+Go to **Settings → API → Webhooks** and create a webhook. You need a role with the **Webhooks** permission.
+
+| Field       | Description                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------------- |
+| Name        | A name that helps you find the webhook                                                            |
+| URL         | The `https` address of your server                                                                |
+| Events      | The events that the webhook sends                                                                 |
+| Data access | The collections and channels that the webhook reports, and whether it includes restricted content |
+
+After you save, Andesine shows the signing secret (`whsec_...`) once. Store it in your server's secret storage.
+
+![The webhook form with the URL, the selected events, and the data access settings.](../imported-image.webp)
+
+You can also manage webhooks with the API and the [SDK](/docs/developers/sdk/) (`client.webhooks`), and send a test event with `webhooks.sendTest`.
+
+## Events
+
+| Event                         | Sent when                                      |
+| ----------------------------- | ---------------------------------------------- |
+| `entry.created`               | An entry is created                            |
+| `entry.updated`               | An entry is renamed or its details change      |
+| `entry.content_saved`         | The content of an entry is saved               |
+| `entry.moved`                 | An entry is moved                              |
+| `entry.deleted`               | An entry is deleted                            |
+| `entry.restored`              | A deleted entry is restored                    |
+| `collection.created`          | A collection is created                        |
+| `collection.updated`          | A collection is renamed or its settings change |
+| `collection.moved`            | A collection is moved                          |
+| `collection.deleted`          | A collection is deleted                        |
+| `collection.restored`         | A deleted collection is restored               |
+| `publishing.channel_advanced` | New content is published to a channel          |
+| `publishing.channel_created`  | A channel is created                           |
+| `publishing.channel_deleted`  | A channel is deleted                           |
+
+To rebuild a site after each publish, use `publishing.channel_advanced`.
+
+Each event has an `id`, a `type`, the `workspaceID`, the event `data`, and an `actor`: the member, API key, extension, or app that made the change.
+
+## Verify requests
+
+Each request is signed with your secret. Always verify the signature before you use the event. With the SDK:
+
+```ts
+import { verifyWebhookRequest } from "@andesine/sdk/webhooks";
+
+export async function POST(request: Request): Promise<Response> {
+  try {
+    const event = await verifyWebhookRequest(request, { secret: process.env.ANDESINE_WEBHOOK_SECRET! });
+
+    if (event.type === "publishing.channel_advanced") {
+      // Start a site build.
+    }
+
+    return new Response(null, { status: 204 });
+  } catch {
+    return new Response(null, { status: 400 });
+  }
+}
+```
+
+The signature covers the `webhook-id` and `webhook-timestamp` headers and the raw body, with HMAC-SHA256. Verify the raw body, not parsed JSON. Requests older than five minutes are rejected.
+
+## Deliveries and retries
+
+- Return a `2xx` status quickly, and do slow work in the background.
+- If your server does not return `2xx`, Andesine tries again later, with longer delays between attempts. After repeated failures, it disables the webhook. Fix the server and enable the webhook again.
+- An event can arrive more than once, and events can arrive in any order. Use the event `id` to skip duplicates.
+- Events tell you that something changed. Read the current state from the API when you need it.
+
+Select **See events** on a webhook to see its deliveries, their responses, and to send an event again.
+
+## Rotate the secret
+
+Select **Rotate secret** to get a new secret. For 24 hours, Andesine signs requests with both the old and the new secret, so you can update your server without missing events.

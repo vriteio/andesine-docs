@@ -1,0 +1,103 @@
+---
+title: CLI
+description: "Use Andesine from the terminal: sign in, call the API, generate
+  types, run the MCP server, and create sites and extensions."
+---
+
+The `andesine` CLI works with the Andesine API from your terminal and your scripts. It needs Node.js 22.12 or later, and is open source under the MIT license.
+
+```sh
+npm install --save-dev andesine @andesine/sdk
+npx andesine --help
+```
+
+Use `npm install --global andesine` to install it for your whole system.
+
+## Sign in
+
+```sh
+npx andesine auth login
+```
+
+The CLI opens Andesine in your browser and shows a code. Check that the code on the **Authorize CLI** page is the same, and select **Approve**. Use `--no-browser` to open the address yourself.
+
+The CLI stores your sign-in in the credential store of your system: Keychain on macOS, Credential Manager on Windows, or Secret Service on Linux. If none is available, it can store it in a file, after you confirm.
+
+| Command                | Does                                               |
+| ---------------------- | -------------------------------------------------- |
+| `andesine auth login`  | Signs in                                           |
+| `andesine auth status` | Shows the account, the instance, and the workspace |
+| `andesine auth logout` | Signs out and removes the saved sign-in            |
+
+In CI, set `ANDESINE_API_KEY` instead. The API key is used before a saved sign-in.
+
+Use profiles for more than one account or instance, for example `andesine --profile work auth login`.
+
+## Set up a project
+
+```sh
+npx andesine init
+```
+
+`init` asks for the workspace, the content source (published or current), the collections, and the path of the generated types. It saves them in `andesine.json`:
+
+```json
+{
+  "version": 1,
+  "workspaceID": "ws_...",
+  "types": {
+    "source": { "kind": "published", "channel": "published" },
+    "collections": ["/Docs"],
+    "output": "src/andesine.generated.ts"
+  }
+}
+```
+
+Commands use the nearest `andesine.json`. The file has no credentials, so you can commit it. Use `init --mcp` to also set up the [local MCP server](/docs/ai-agents/local-server-and-plugin/).
+
+Flags and environment variables override the file:
+
+| Flag          | Environment variable    |
+| ------------- | ----------------------- |
+| `--base-url`  | `ANDESINE_BASE_URL`     |
+| `--workspace` | `ANDESINE_WORKSPACE_ID` |
+| `--profile`   | `ANDESINE_PROFILE`      |
+| `--config`    | `ANDESINE_CONFIG`       |
+
+## Call the API
+
+`andesine api <resource> <operation>` runs any operation of the [API reference](/docs/api/). Names use kebab case: `content.getTree` is `api content get-tree`.
+
+```sh
+npx andesine api content get-tree --channel published
+npx andesine api content get --slug-path /docs/introduction --channel published
+npx andesine api content list-entries --channel published --paginate
+npx andesine api search ask-published-stream --input @question.json --format text
+npx andesine api assets upload --asset-id ast_... --file ./image.png
+```
+
+- `--help` shows the fields of an operation, and `--schema` shows its input JSON Schema.
+- Pass fields as flags, such as `--collection-id`, or as JSON with `--input @file.json` or `--input -` for stdin.
+- Output is one JSON value per line. `--full` adds the HTTP status and headers. `--paginate` prints each page.
+- `--output <file>` saves binary responses, such as images.
+
+## Other commands
+
+| Command                   | Does                                                                                                |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| `andesine types generate` | Generates TypeScript types. See [Content types](/docs/developers/content-types/).                   |
+| `andesine mcp`            | Runs the local MCP server. See [Local server and plugin](/docs/ai-agents/local-server-and-plugin/). |
+| `andesine pages init`     | Creates a Pages site. See [Pages framework](/docs/publishing/pages-framework/).                     |
+| `andesine extensions ...` | Creates, builds, and tests extensions. See [Build extensions](/docs/extensions/build-extensions/).  |
+
+## Output and exit codes
+
+Data goes to stdout, and messages and prompts go to stderr, so you can pipe the output to other tools. Prompts are off in CI and with `--no-interactive`.
+
+| Exit code | Meaning                         |
+| --------- | ------------------------------- |
+| `0`       | Success                         |
+| `1`       | The command failed              |
+| `2`       | Wrong usage or configuration    |
+| `3`       | Generated types are out of date |
+| `130`     | Cancelled                       |

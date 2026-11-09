@@ -1,0 +1,137 @@
+---
+title: SDK
+description: Use the Andesine API from TypeScript with the @andesine/sdk package.
+---
+
+`@andesine/sdk` is the TypeScript client for the Andesine API. It works in Node.js 22 or later, and in browsers and workers. It is open source under the MIT license.
+
+```sh
+npm install @andesine/sdk
+```
+
+## Create a client
+
+```ts
+import { createClient } from "@andesine/sdk";
+
+const client = createClient({ apiKey: process.env.ANDESINE_API_KEY });
+
+const tree = await client.content.getTree({ channel: "published" });
+const page = await client.content.get({ path: "/Docs/Quickstart", channel: "published" });
+```
+
+Without `apiKey`, the client reads `ANDESINE_API_KEY` from the environment. `baseURL` defaults to `https://api.andesine.app`; set it for a self-hosted instance.
+
+Each operation of the [API reference](/docs/api/) is a method, such as `client.entries.get()` or `client.publishing.publish()`. Methods take one object with all the fields, and return the data.
+
+## In the browser
+
+Use a publishable key in browser code:
+
+```ts
+const client = createClient({ apiKey: "adn_pk_..." });
+
+const results = await client.search.published({ query: "install", channel: "published" });
+```
+
+A publishable key can read, search, and, if allowed, answer questions about the published content of its collections. It works only on its allowed origins. See [API overview](/docs/developers/api-overview/).
+
+## For a user
+
+To act for a signed-in user, pass an OAuth access token, and the workspace in a header:
+
+```ts
+const client = createClient({
+  accessToken,
+  headers: { "x-workspace-id": workspaceID }
+});
+```
+
+The SDK does not sign in users or refresh tokens.
+
+## Structured content
+
+`toStructuredContent()` returns the properties and fragments of an entry as two maps, keyed by field:
+
+```ts
+import { toStructuredContent } from "@andesine/sdk";
+
+const page = await client.content.get({ path: "/Changelog/v2", channel: "published" });
+const { properties, fragments } = toStructuredContent(page);
+
+console.log(properties.releaseDate, fragments.content);
+```
+
+For typed fields, generate [content types](/docs/developers/content-types/).
+
+## Read a consistent set of pages
+
+Pin related reads to the snapshot of the first read, so all pages come from the same publish:
+
+```ts
+const tree = await client.content.getTree({ channel: "published" });
+const content = client.atSnapshot(tree.snapshotID);
+const entry = await content.get({ entryID: "ent_..." });
+```
+
+To list entries with their content, filtered by properties:
+
+```ts
+const page = await client.content.listEntries({
+  channel: "published",
+  collectionPath: "/Tutorials",
+  descendants: true,
+  includeContent: true,
+  filters: [{ kind: "text", key: "audience", values: ["beginner"] }]
+});
+```
+
+## Pagination
+
+```ts
+import { paginate } from "@andesine/sdk";
+
+for await (const entry of paginate((cursor) => client.entries.list({ cursor }))) {
+  console.log(entry.name);
+}
+```
+
+Use `paginatePages()` to work page by page and save the cursor.
+
+## AI answers
+
+```ts
+const result = await client.search.askPublished({
+  channel: "published",
+  collectionPath: "/Docs",
+  question: "How do I install the CLI?"
+});
+
+console.log(result.answer, result.sources);
+```
+
+`[1]` in the answer refers to the source with `id` 1. Use `askPublishedStream` to show the answer while it is written. Call AI answers from your server with a secret key, or from the browser with a publishable key that allows AI answers.
+
+## Errors
+
+Failed requests throw `AndesineAPIError` with `status`, `code`, `message`, `hints`, and `data`:
+
+```ts
+import { AndesineAPIError } from "@andesine/sdk";
+
+try {
+  await client.entries.update({ id: "ent_...", name: "Installation" });
+} catch (error) {
+  if (error instanceof AndesineAPIError && error.is("TOO_MANY_REQUESTS")) {
+    console.log(error.data?.limit, error.data?.retryAfterSeconds);
+  }
+}
+```
+
+## Timeouts and retries
+
+Requests time out after 30 seconds; set `timeout` to change it, or `0` to turn it off. Retries are off by default. Set `retries: 2` to retry reads and safe writes after network errors and `429` or `5xx` responses. Writes that create or update entries and versions send an idempotency key, so a retry never applies them twice.
+
+## Webhooks
+
+`client.webhooks` manages webhooks, and `@andesine/sdk/webhooks` verifies incoming events. See [Webhooks](/docs/developers/webhooks/).

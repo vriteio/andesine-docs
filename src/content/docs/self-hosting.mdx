@@ -1,0 +1,92 @@
+---
+title: Self-hosting
+description: Run Andesine on your own server with Docker Compose.
+---
+
+Andesine is open source. You can run it on your own server with Docker Compose. A self-hosted instance has all features of the Pro plan, no billing, and sends no analytics.
+
+## Requirements
+
+- A server with Docker and Docker Compose.
+- An email service: [Resend](https://resend.com) or any SMTP server. Andesine sends sign-in codes and invitations by email.
+- An S3-compatible bucket for images, such as AWS S3 or Cloudflare R2. Without it, image uploads are off.
+- Optional: an OpenAI API key, or a key of another OpenAI-compatible API, for semantic search, AI answers, and image analysis.
+
+## Run Andesine
+
+<Steps>
+  <Step title="Get the code">
+    Clone the repository: `git clone https://github.com/vriteio/andesine.git`, and open its folder.
+  </Step>
+
+  <Step title="Configure">
+    Copy `.env.example` to `.env`, and set the values in the next section.
+  </Step>
+
+  <Step title="Start">
+    Run `docker compose up -d`. Compose builds the images, starts PostgreSQL, Redis, and Typesense, and runs the database migrations.
+  </Step>
+
+  <Step title="Sign up">
+    Open the app address and create your account and workspace.
+  </Step>
+</Steps>
+
+The web app listens on port `3000`, and the API on port `3333`.
+
+## Required settings
+
+| Setting                       | Value                                                                                                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `PUBLIC_APP_HOST`             | The host of the app, such as `andesine.example.com`                                                                          |
+| `PUBLIC_API_HOST`             | The host of the API, such as `api.andesine.example.com`                                                                      |
+| `PUBLIC_SECURE`               | `true` when you serve Andesine over HTTPS                                                                                    |
+| `PUBLIC_COOKIE_DOMAIN`        | The domain of the sign-in cookies, such as `andesine.example.com`                                                            |
+| `SECRET`                      | A random secret. Create it with `openssl rand -hex 32`.                                                                      |
+| `ENCRYPTION_KEYS`             | Keys that encrypt stored secrets, as JSON: `[{"id":"key-1","key":"<key>"}]`. Create each key with `openssl rand -base64 32`. |
+| `SENDER_EMAIL`, `SENDER_NAME` | The sender of emails                                                                                                         |
+| `RESEND_API_KEY`, or `SMTP_*` | The email service                                                                                                            |
+
+<Callout type="warning">
+  Back up `ENCRYPTION_KEYS` with your database. Without the keys, Andesine cannot read the stored secrets, such as webhook secrets. To change keys, add a new key first in the list and keep the old keys.
+</Callout>
+
+## Optional settings
+
+| Settings                                               | Turn on                                                                          |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| `ASSET_S3_*`                                           | Image uploads                                                                    |
+| `OPENAI_API_KEY`, `OPENAI_BASE_URL`                    | Semantic search, AI answers, and image analysis                                  |
+| `GOOGLE_CLIENT_*`, `GITHUB_CLIENT_*`                   | Sign-in with Google and GitHub                                                   |
+| `PUBLIC_EXTENSIONS_ENABLED`, `EXTENSIONS_REGISTRY_URL` | Extensions from a registry, such as `https://extensions.andesine.app/index.json` |
+| `VERSION_RETENTION_DAYS`                               | How long automatic versions are kept                                             |
+| `ASSET_MAX_UPLOAD_BYTES`                               | The maximum image size                                                           |
+
+`.env.example` describes all settings. Set `PUBLIC_*` values before you build, because they are built into the web app.
+
+## HTTPS
+
+Put a reverse proxy, such as Caddy or nginx, in front of the app and the API, and serve both over HTTPS. Set `TRUST_PROXY` to the address of the proxy, so that the API sees the real addresses of visitors.
+
+## Use the CLI and the SDK
+
+Point the CLI and the SDK to your API:
+
+```sh
+npx andesine --base-url https://api.andesine.example.com auth login
+```
+
+```ts
+const client = createClient({ baseURL: "https://api.andesine.example.com", apiKey });
+```
+
+For AI apps, the MCP server is at `https://<your API host>/mcp`. Apps that connect from their own servers, such as Claude and ChatGPT, need the API on a public HTTPS address.
+
+## Update
+
+```sh
+git pull
+docker compose up -d --build
+```
+
+The `migrate` service updates the database before the API starts. Back up the database before you update.

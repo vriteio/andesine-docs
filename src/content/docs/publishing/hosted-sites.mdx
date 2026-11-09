@@ -1,0 +1,74 @@
+---
+title: Hosted sites
+description: Publish a collection as a documentation site on andesine.page or
+  your own domain, with no code.
+---
+
+The **Andesine Pages** extension turns a collection into a documentation site. Andesine builds and hosts the site, and updates it each time you publish. Sites have navigation, search, AI answers, and pages that AI agents can read.
+
+![A hosted documentation site with navigation on the left, a page in the middle, and search at the top.](../imported-image.webp)
+
+## Create a site
+
+<Steps>
+  <Step title="Install the extension">
+    Go to **Settings → Extensions → Catalog**, select **Andesine Pages**, and install it. See [Use extensions](/docs/extensions/use-extensions/).
+  </Step>
+
+  <Step title="Open the collection">
+    Open the menu of the collection that holds your docs, and open the **Setup** page of Andesine Pages. Publishing must be on for the collection.
+  </Step>
+
+  <Step title="Create the site">
+    Choose a subdomain and the channel that the site shows, then select **Create site**. The site is at `https://<subdomain>.andesine.page`.
+  </Step>
+
+  <Step title="Publish">
+    Publish the collection. The first build starts, and the site shows the published content when it is done.
+  </Step>
+</Steps>
+
+## How the site is built
+
+- Each collection becomes a navigation group, and each entry becomes a page.
+- An entry named `index` is the landing page of its collection.
+- The site shows only published content from its channel. Edits show after you publish them.
+- Elements such as callouts, cards, steps, and tabs show as site components. The extension also shows these components in the editor, so they look the same while you write. See [Elements](/docs/writing/elements/).
+
+The site builds each time you publish to its channel. The **Builds** list shows the last five builds and their status. Select **Rebuild** to build the site again.
+
+## Site settings
+
+Open the **Site** page of the collection to change the settings:
+
+| Setting                 | What it controls                                                                   |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| Name and logo           | The name in the header, page titles, and link previews; an icon or a full wordmark |
+| Favicon                 | The icon in the browser tab                                                        |
+| Colours                 | The primary colour for links and buttons, and the colours of gradients             |
+| Links                   | A call-to-action button in the header, links in the navigation, and social links   |
+| Page actions            | Copy a page as Markdown, or open it in ChatGPT, Claude, or Perplexity              |
+| Link previews           | Generated preview images for each page, or one image for all pages                 |
+| AI answers              | Answers in the site search; each answer uses the workspace's AI credits            |
+| Instructions for agents | Text for AI agents in the Markdown pages and `llms.txt`                            |
+| Language                | The language tag of the site, such as `en`                                         |
+
+Select **Open site** to see the site.
+
+## Custom domains
+
+On the Pro plan, you can serve the site from your own domain, such as `docs.example.com`.
+
+1. In the **Domains** section, select **Add a domain** and type the domain.
+2. Add the CNAME and TXT records that it shows at your DNS provider.
+3. Wait until the status changes from **Waiting for DNS** to **Active**.
+
+The primary domain is used in canonical links. On the Free plan, sites show a **Powered by Andesine Pages** credit. Removing the credit also needs the Pro plan.
+
+## Template version and self-hosting
+
+The **Template** setting shows the Andesine Pages version that builds the site. Update it to get new features. To host the site yourself, download the site's `andesine.config.ts` in **Self-hosting** and build it with the [Pages framework](/docs/publishing/pages-framework/).
+
+## Delete a site
+
+Select **Delete the site**. The address stops working. The collection and its content do not change.

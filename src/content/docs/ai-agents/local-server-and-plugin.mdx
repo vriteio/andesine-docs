@@ -1,0 +1,66 @@
+---
+title: Local server and plugin
+description: Run the Andesine MCP server locally for coding agents, and install
+  the Claude Code and Cursor plugin.
+---
+
+Coding agents, such as Claude Code, Cursor, Codex, and Gemini CLI, can run the Andesine MCP server on your computer with the [CLI](/docs/developers/cli/). The local server has the same tools as the remote server, and one more: `upload_image`, which uploads image files from your computer.
+
+## Set up a project
+
+<Steps>
+  <Step title="Sign in">
+    Run `npx andesine auth login`. The CLI opens Andesine in your browser. Enter the code from your terminal on the **Authorize CLI** page and select **Approve**. In CI or other environments without a browser, set `ANDESINE_API_KEY` instead.
+  </Step>
+
+  <Step title="Add the server to the project">
+    In your project, run `npx andesine init --mcp`. Choose the workspace. The command saves it in `andesine.json` and adds the server to the files of the agents that the project uses.
+  </Step>
+
+  <Step title="Start your agent">
+    Start the agent in the project folder. It starts the server with `npx -y andesine mcp`.
+  </Step>
+</Steps>
+
+`init --mcp` writes to these files, and keeps the other servers and settings in them:
+
+| File                    | Agents                     |
+| ----------------------- | -------------------------- |
+| `.mcp.json`             | Claude Code, VS Code       |
+| `.cursor/mcp.json`      | Cursor                     |
+| `.gemini/settings.json` | Gemini CLI                 |
+| `.codex/config.toml`    | Codex, in trusted projects |
+
+You can also add the server with the command of your agent:
+
+```sh
+claude mcp add --scope project andesine -- npx -y andesine mcp
+```
+
+```sh
+codex mcp add andesine -- npx -y andesine mcp
+```
+
+## Options
+
+- The server uses the workspace in the `andesine.json` of the folder where the agent starts it. Use `--workspace <id>` to choose another workspace.
+- `--read-only` lists only the tools that read content.
+- With an API key, the server lists only the tools that the key's permissions allow.
+
+## Claude Code and Cursor plugin
+
+The Andesine plugin adds the local server and a skill that tells the agent when to use the MCP tools, the CLI, or the SDK.
+
+In Claude Code, run:
+
+```text
+/plugin install andesine --marketplace vriteio/andesine
+```
+
+In Cursor, install **Andesine** from the Cursor Marketplace.
+
+Before you use the plugin, sign in with `npx andesine auth login` and run `npx andesine init --mcp` in the project.
+
+## Privacy
+
+The local server runs on your computer and sends requests only to Andesine, with your CLI sign-in or API key. It sends the content that the agent reads or writes and the images that it uploads.

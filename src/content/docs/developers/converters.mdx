@@ -1,0 +1,81 @@
+---
+title: Converters
+description: Convert Andesine content to and from Markdown, MDX, Markdoc, HTML,
+  and plain text.
+---
+
+The API returns content as a JSON document. `@andesine/converters` turns that document into Markdown, MDX, Markdoc, HTML, or plain text, and turns Markdown, MDX, Markdoc, and HTML back into documents. Use it to render content on your site, or to import files into Andesine. It is open source under the MIT license.
+
+```sh
+npm install @andesine/converters
+```
+
+## Formats
+
+| Format     | Import                          | To document    | From document |
+| ---------- | ------------------------------- | -------------- | ------------- |
+| Markdown   | `@andesine/converters/markdown` | `fromMarkdown` | `toMarkdown`  |
+| MDX        | `@andesine/converters/mdx`      | `fromMDX`      | `toMDX`       |
+| Markdoc    | `@andesine/converters/markdoc`  | `fromMarkdoc`  | `toMarkdoc`   |
+| HTML       | `@andesine/converters/html`     | `fromHTML`     | `toHTML`      |
+| Plain text | `@andesine/converters/text`     | —              | `toText`      |
+
+All functions return promises.
+
+## Render published content
+
+```ts
+import { createClient } from "@andesine/sdk";
+import { publishedContentOptions } from "@andesine/converters";
+import { toHTML } from "@andesine/converters/html";
+
+const client = createClient({ apiKey: process.env.ANDESINE_API_KEY });
+const page = await client.content.get({ path: "/Docs/Quickstart", channel: "published" });
+const html = await toHTML(page.content, publishedContentOptions(page));
+```
+
+`publishedContentOptions(page)` gives the converter the image URLs of the published content.
+
+## Title, properties, and fragments
+
+Choose how the title, properties, and fragments are written:
+
+| Part       | Default                  | Other options                                     |
+| ---------- | ------------------------ | ------------------------------------------------- |
+| Title      | A first-level heading    | Omit it, or write it to the frontmatter           |
+| Properties | Omitted                  | Frontmatter, or `<Property>` elements             |
+| Fragments  | Unwrapped (content kept) | Omit them, or write them as `<Fragment>` elements |
+
+For example, an MDX file with the title and properties in frontmatter:
+
+```ts
+import { createMDXConverter } from "@andesine/converters/mdx";
+
+const converter = createMDXConverter({
+  title: { as: "frontmatter", key: "title" },
+  properties: { as: "frontmatter" }
+});
+
+const source = await converter.encode(page.content);
+const document = await converter.decode(source);
+```
+
+Markdown, MDX, and Markdoc support frontmatter. HTML and plain text do not. Element mappings need a format with elements: MDX, Markdoc, or HTML.
+
+## Elements
+
+In MDX, elements stay components, such as `<Callout type="tip">`. In Markdoc, they become tags. In HTML, they become `div` blocks with their attributes as data. To write an element in your own way, for example as your site's component, add a custom handler for it.
+
+## Heading anchors
+
+`getHeadingAnchors(document)` returns the anchor ID of each heading. Search results and AI answer sources use the same anchors, so links from search go to the right heading. `toHTML` adds these IDs to the headings.
+
+## Import files
+
+```ts
+import { fromMarkdown } from "@andesine/converters/markdown";
+
+const document = await fromMarkdown("# Installation\n\nRun `npm install`.");
+```
+
+The first-level heading becomes the title. Use `targetFragment: "content"` to put the imported content in a fragment of a collection with a schema. For images, provide an `imageAssetID` callback that uploads each image and returns its asset ID.

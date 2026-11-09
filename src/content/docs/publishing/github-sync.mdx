@@ -1,0 +1,83 @@
+---
+title: GitHub Sync
+description: Sync a collection with Markdown or MDX files in a GitHub
+  repository, in both directions.
+---
+
+The **GitHub Sync** extension keeps a collection and a folder of Markdown or MDX files in a GitHub repository the same. Use it for docs that build from a repository, such as an Astro, Next.js, or Pages framework site, while your team writes in Andesine.
+
+- **Andesine to GitHub:** each publish to the mapped channel creates one commit with all the changed files.
+- **GitHub to Andesine:** each push to the mapped branch updates the entries and publishes them to the channel.
+
+![The GitHub Sync panel of a collection with the repository, branch, and last sync.](../imported-image.webp)
+
+## Set up
+
+<Steps>
+  <Step title="Install the extension">
+    Go to **Settings → Extensions → Catalog** and install **GitHub Sync**.
+  </Step>
+
+  <Step title="Enable publishing">
+    Open the menu of the collection and select **Enable publishing**. The sync uses the nearest collection that has publishing on.
+  </Step>
+
+  <Step title="Connect GitHub">
+    Open the **GitHub Sync** panel of the collection and select **Setup**. Connect your GitHub account and install the GitHub App on the repositories that you want to sync.
+  </Step>
+
+  <Step title="Map the collection">
+    Choose the channel, repository, branch, and directory, and the other settings below. Then save the mapping.
+  </Step>
+</Steps>
+
+## Mapping settings
+
+| Setting          | Description                                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Source           | The channel. Publishes to it go to GitHub, and pushes from GitHub are published to it.                                       |
+| Repository       | A repository that the GitHub App can access. Private repositories need the Pro plan.                                         |
+| Branch           | The branch that the sync reads and commits to.                                                                               |
+| Directory        | The folder of the files, such as `docs` or `src/content/docs`. Empty for the repository root.                                |
+| Matching files   | For the first sync: keep the GitHub files or the Andesine entries when both exist.                                           |
+| New files        | The format of files for entries created in Andesine: MDX or Markdown.                                                        |
+| Links            | How links between files are written: file paths (`./setup.mdx`) or site URLs (`../setup/`).                                  |
+| Include, Exclude | Glob patterns that select or skip files in the directory.                                                                    |
+| Images           | Where images are committed (one folder or next to their entries), how files link them, and the format (as uploaded or WebP). |
+
+## How files map to entries
+
+- Each folder is a collection, and each file is an entry.
+- The title and the properties are in the frontmatter of the file. Properties use the keys from the API, such as `releaseDate`.
+- An `index` file is the `index` entry of its folder. Its title is the name of the collection.
+- The frontmatter field `order` sets the position of an entry in its collection.
+- Elements are MDX components, such as `<Callout>`.
+- Links between entries become links between files, in the format that you chose.
+- Images are committed as files and linked from the files.
+
+Files stay standard Markdown or MDX, so other tools can read them. The sync keeps what files cannot hold, such as fragment boundaries, in `.andesine/sync.json` at the repository root. Do not edit that file.
+
+## The first sync
+
+The first sync links the files to the entries and collections that already exist, by folder and name. The setup shows how many match. For matching items, **Matching files** chooses which side wins:
+
+- **Keep GitHub files:** the files become the content of the entries.
+- **Keep Andesine entries:** the entries overwrite the files.
+
+## Changes on both sides
+
+When a push changes a file whose entry was also edited in Andesine since the last publish, the sync keeps your edits in the entry. The file's content becomes a version of the entry, so you can compare and choose. See [Versions](/docs/organizing-content/versions/).
+
+Commits made by the sync have an `Andesine-Sync:` trailer, so they do not sync back to Andesine.
+
+Deleting a file unpublishes its entry. Unpublishing an entry deletes its file.
+
+## Sync details and disabling
+
+The **Sync details** page shows the last syncs and the files that the sync skipped, with the reason. To stop syncing, disable the sync there. The links between files and entries are kept, so if you map the same repository, branch, and directory again, the sync does not create the entries again.
+
+## Limits
+
+- Code block titles, such as ` ```ts title="app.ts" `, are not kept.
+- Files with an element inside a paragraph are skipped.
+- Images must be PNG, JPEG, or WebP; other image files are skipped.

@@ -1,0 +1,65 @@
+---
+title: Tools, resources, and prompts
+description: The tools, resources, and prompts of the Andesine MCP server.
+---
+
+The remote and local Andesine MCP servers have the same tools, resources, and prompts. Your AI app chooses the tools for each request, so you normally only describe what you want, for example "Update the setup guide for the new CLI flag and publish it."
+
+## Tools
+
+Tools that change content need write access. A read-only connection lists only the read tools.
+
+| Tool             | What it does                                                             | Access |
+| ---------------- | ------------------------------------------------------------------------ | ------ |
+| `search`         | Searches the workspace content                                           | Read   |
+| `fetch`          | Reads an entry as MDX, as blocks, or as an outline; or one section of it | Read   |
+| `get_tree`       | Lists the collections and entries under a path                           | Read   |
+| `get_schema`     | Reads the schema fields of a collection                                  | Read   |
+| `get_migration`  | Shows the progress of a schema migration                                 | Read   |
+| `list_versions`  | Lists the versions of an entry or a schema                               | Read   |
+| `list_channels`  | Lists the publishing channels                                            | Read   |
+| `create_entry`   | Creates an entry, and the collections in its path                        | Write  |
+| `edit_entry`     | Changes parts of an entry: text, blocks, or fields                       | Write  |
+| `write_entry`    | Replaces all content of an entry                                         | Write  |
+| `move`           | Moves or renames entries and collections                                 | Write  |
+| `delete`         | Deletes an entry or a collection                                         | Write  |
+| `save_version`   | Saves a named version                                                    | Write  |
+| `revert_version` | Restores an entry or a schema to a saved version                         | Write  |
+| `set_schema`     | Changes the schema of a collection and converts its entries              | Write  |
+| `publish`        | Publishes entries or collections to a channel                            | Write  |
+| `unpublish`      | Removes entries or collections from a channel                            | Write  |
+| `upload_image`   | Uploads an image file from your computer (local server only)             | Write  |
+
+The AI app edits entries in MDX. Edits keep the changes that people make at the same time in other parts of the entry.
+
+## Resources
+
+Apps that support resources can read these:
+
+| Resource                                | Content                             |
+| --------------------------------------- | ----------------------------------- |
+| `andesine://workspace`                  | An overview of the workspace        |
+| `andesine://entries/{path}`             | An entry as MDX                     |
+| `andesine://published/{channel}/{path}` | The published content of an entry   |
+| `andesine://collections/{path}/schema`  | The schema of a collection          |
+| `andesine://guide/mdx`                  | The MDX syntax that Andesine uses   |
+| `andesine://guide/elements`             | The custom elements and their rules |
+
+## Prompts
+
+Apps that support prompts show these as commands, for example `/draft-entry`:
+
+| Prompt          | What it does                                                                  |
+| --------------- | ----------------------------------------------------------------------------- |
+| `draft-entry`   | Writes a new unpublished entry that follows the collection's schema and style |
+| `update-docs`   | Finds the entries that a change affects and updates them                      |
+| `review-entry`  | Finds problems in an entry without changing it                                |
+| `answer`        | Answers a question only from workspace content, with citations                |
+| `release-notes` | Compares the drafts with the published content and summarizes the changes     |
+| `reorganize`    | Proposes a better structure for a collection, and applies it after approval   |
+
+## Good practices
+
+- Give the app read-only access when it only needs to answer questions.
+- Ask the app to save a version before large changes, or to leave changes unpublished so that you can review them in the **Publishing** panel.
+- Review schema changes before the app applies them. A schema change can remove content from entries; the removed content stays in the entries' versions.

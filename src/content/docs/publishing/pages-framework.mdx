@@ -1,0 +1,114 @@
+---
+title: Pages framework
+description: Build and host your own documentation site with Andesine Pages,
+  Astro, and Solid.js.
+---
+
+Andesine Pages is an open-source documentation site template, built with Astro and Solid.js. Use it when you want full control of the design and the hosting. You own all the files: configuration, layouts, styles, and components. These docs are built with it.
+
+A Pages site can show:
+
+- Pages from an Andesine collection, read at build time.
+- Markdown and MDX files in the project, for example files from [GitHub Sync](/docs/publishing/github-sync/).
+- An API reference from an OpenAPI spec.
+
+It includes search, AI answers, link preview images, and Markdown versions of each page for AI agents. If you don't need your own code, use [hosted sites](/docs/publishing/hosted-sites/) instead.
+
+## Create a site
+
+Use Node.js 24 or later.
+
+```sh
+npx andesine pages init docs
+cd docs
+npm install
+npm run dev
+```
+
+The command copies the template into the `docs` folder, with the `@andesine/pages` and `@andesine/ui` packages pinned to the same version. It needs no account.
+
+## Show an Andesine collection
+
+1. In Andesine, enable publishing for the collection and publish it.
+2. Go to **Settings → Publishing → Sites**, create a publishable key for the collection, and add your site's origin, such as `https://docs.example.com`. Allow AI answers if the site uses them.
+3. Set the collection ID and the key for the build:
+
+```sh
+ANDESINE_COLLECTION_ID=coll_...
+ANDESINE_PUBLIC_KEY=adn_pk_...
+```
+
+The build reads the published content with the key, so no secret key is needed. Build the site again after you publish, for example from a [webhook](/docs/developers/webhooks/) on the `publishing.channel_advanced` event.
+
+## Configuration
+
+`andesine.config.ts` holds the site settings. The build stops with a list of errors when a setting is not valid.
+
+| Setting       | Description                                                        |
+| ------------- | ------------------------------------------------------------------ |
+| `name`        | The site name, in the header and page titles                       |
+| `description` | The default page description                                       |
+| `site`        | The public URL of the site                                         |
+| `base`        | The URL path of the site, such as `/docs/`; the default is `/`     |
+| `logo`        | The logo image, as an `icon` next to the name or a `full` wordmark |
+| `favicon`     | The browser tab icon                                               |
+| `brand`       | The `primary`, `secondary`, and `tertiary` colours                 |
+| `links`       | Icon links at the top of the navigation                            |
+| `cta`         | The main action link in the header                                 |
+| `socialLinks` | Icon links in the footer                                           |
+| `pageActions` | The page actions menu, or `false` to hide it                       |
+| `agents`      | Instructions and a skill file for AI agents                        |
+| `social`      | Link preview images                                                |
+| `sections`    | Top-level tabs, such as **Guides** and **API reference**           |
+| `sources`     | Where the pages come from                                          |
+
+For example, a site with files and an API reference:
+
+```ts
+import { defineConfig } from "@andesine/pages";
+
+export default defineConfig({
+  name: "Example Docs",
+  site: "https://docs.example.com",
+  sections: [
+    { id: "guides", label: "Guides", sources: ["docs"] },
+    { id: "reference", label: "API reference", sources: ["api"] }
+  ],
+  sources: [
+    { id: "docs", type: "files", directory: "src/content/docs" },
+    { id: "api", type: "openapi", spec: "https://api.example.com/openapi.json", mount: "/api/" }
+  ]
+});
+```
+
+## Pages and navigation
+
+Each `.md` or `.mdx` file is one page. The file path gives the URL and the place in the navigation: `guides/setup.md` is at `/guides/setup/`, and `guides/index.md` is the landing page of the `guides` group. Items sort by `order`, then by path.
+
+Pages can set these frontmatter fields: `title` (required), `description`, `slug`, `navigationLabel`, `navigationHidden`, `searchHidden`, `order`, `toc`, `layout` (`docs` or `wide`), and `updatedAt`. The build stops on an unknown field, or when two pages have the same URL.
+
+<Callout type="tip">
+  When you show an Andesine collection, or sync files with GitHub Sync, add schema properties with these names to set the fields from Andesine. For example, a `Description` property sets `description`.
+</Callout>
+
+## Components
+
+MDX pages and Andesine content can use these components without imports: `Callout`, `Card` and `CardGrid`, `Steps` and `Step`, `Tabs` and `Tab`, `CodeGroup`, `Accordion`, `Figure`, `FileTree`, `Visibility`, and `Operation`, which shows one API operation in a guide. With the Andesine Pages extension, these components also show as views in the Andesine editor.
+
+## API reference
+
+An `openapi` source reads an OpenAPI 3.0 or 3.1 spec, from a file or an HTTPS URL, at build time. It makes an overview page, a page for each tag, and a page for each operation, with request examples in cURL, JavaScript, and Python. Add `x-codeSamples` to an operation to replace or add examples.
+
+## Pages for AI agents
+
+Each page has a Markdown version at its URL plus `index.md`. The site also has `llms.txt`, `llms-full.txt`, `sitemap.xml`, and a `skill.md` that tells AI agents what the docs cover. The page actions menu copies a page as Markdown or opens it in ChatGPT, Claude, or Perplexity.
+
+## Deploy
+
+| Content source                  | Output                         | Hosts                                   |
+| ------------------------------- | ------------------------------ | --------------------------------------- |
+| Files only                      | Static files in `dist/`        | Any static host                         |
+| Andesine with a publishable key | Static files in `dist/`        | Any static host                         |
+| Andesine with a secret key      | Static pages and server routes | Node.js, Vercel, Netlify, or Cloudflare |
+
+Run `npm run build` and upload `dist/` to your host. With a secret key (`ANDESINE_API_KEY`) in place of a publishable key, search and AI answers run through server routes that keep the key on the server, so the site needs a server adapter. The example pages of a new site include a **Deployment** guide with the steps for each host.
