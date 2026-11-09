@@ -31,7 +31,12 @@ export default defineConfig({
     }
   ],
   sections: [
-    { id: "guides", label: "Guides", icon: "i-lucide:book-open", sources: ["docs"] },
+    {
+      id: "documentation",
+      label: "Documentation",
+      icon: "i-lucide:book-open",
+      sources: ["docs"]
+    },
     { id: "reference", label: "API reference", icon: "i-lucide:braces", sources: ["api"] }
   ],
   sources: [
