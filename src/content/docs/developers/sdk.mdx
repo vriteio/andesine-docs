@@ -22,7 +22,7 @@ const page = await client.content.get({ path: "/Docs/Quickstart", channel: "publ
 
 Without `apiKey`, the client reads `ANDESINE_API_KEY` from the environment. `baseURL` defaults to `https://api.andesine.app`; set it for a self-hosted instance.
 
-Each operation of the [API reference](/docs/api/) is a method, such as `client.entries.get()` or `client.publishing.publish()`. Methods take one object with all the fields, and return the data.
+Each operation of the [API reference](/docs/api/) is a method, such as `client.entries.get()` or `client.publishing.publishEntry()`. Methods take one object with all the fields, and return the data.
 
 ## In the browser
 
@@ -110,7 +110,70 @@ const result = await client.search.askPublished({
 console.log(result.answer, result.sources);
 ```
 
-`[1]` in the answer refers to the source with `id` 1. Use `askPublishedStream` to show the answer while it is written. Call AI answers from your server with a secret key, or from the browser with a publishable key that allows AI answers.
+`[1]` in the answer refers to the source with `id` 1. Call AI answers from your server with a secret key, or from the browser with a publishable key that allows AI answers. Each answer uses 10 AI credits.
+
+### Stream an answer
+
+`askPublishedStream` and `askCurrentStream` send the answer while it is written. They take the same input as `askPublished` and `askCurrent`:
+
+```ts
+const controller = new AbortController();
+const events = await client.search.askPublishedStream(
+  { channel: "published", collectionPath: "/Docs", question: "How do I install the CLI?" },
+  { signal: controller.signal, timeout: 120_000 }
+);
+
+for await (const event of events) {
+  if (event.type === "sources") console.log(event.sources);
+  if (event.type === "textDelta") process.stdout.write(event.text);
+  if (event.type === "completed") console.log(event.answer);
+}
+```
+
+The stream sends one `sources` event, then `textDelta` events, then one `completed` event with the full answer. The text is plain text that can contain Markdown. An answer without sources can complete without `textDelta` events.
+
+- To stop, call `controller.abort()` or `break` from the loop. If you do not read the stream, call `await events.return?.()` to close it.
+- The timeout is for the full stream. `timeout: 0` turns it off.
+- The SDK does not reconnect or retry a stream.
+- An error before the stream starts is an `AndesineAPIError`. An error during the stream is an `AndesineStreamError`. A stream that is not complete or not valid gives an `AndesineStreamProtocolError`.
+
+An answer uses credits when the generation starts, also if it fails or you cancel it later.
+
+### Forward a stream to the browser
+
+Keep your secret key on your server. `@andesine/sdk/streaming` forwards the stream from your server to the browser:
+
+```ts
+import { toAnswerResponse } from "@andesine/sdk/streaming";
+
+export async function POST(request: Request): Promise<Response> {
+  const { question } = await request.json();
+  const events = await client.search.askPublishedStream(
+    { channel: "published", collectionPath: "/Docs", question },
+    { signal: request.signal, timeout: 120_000 }
+  );
+
+  return toAnswerResponse(events);
+}
+```
+
+`toAnswerResponse` uses only standard Fetch types and sends no headers or credentials from Andesine. Handle errors that occur before it with your normal error handler. Your hosting platform must support streamed responses.
+
+In the browser, read the response with `readAnswerStream`:
+
+```ts
+import { readAnswerStream } from "@andesine/sdk/streaming";
+
+const response = await fetch("/api/ask", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ question: "How do I install the CLI?" })
+});
+
+for await (const event of await readAnswerStream(response)) {
+  console.log(event);
+}
+```
 
 ## Errors
 

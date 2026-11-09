@@ -41,7 +41,7 @@
       "fragments": [
         {
           "name": "Content",
-          "from": "8d0f189dfb7f04ed",
+          "from": "f692f82b98f665a4",
           "to": "b8e8669b7391103d",
           "before": null,
           "after": null
@@ -150,7 +150,7 @@
         {
           "name": "Content",
           "from": "15a25b560a546daf",
-          "to": "da4ac9535523033c",
+          "to": "b183871b5e184463",
           "before": null,
           "after": null
         }
@@ -181,12 +181,30 @@
         }
       ]
     },
+    "src/content/docs/extensions/extension-reference.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "d8b7f25465a48f80",
+          "to": "fb62591c1dd59dc7",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
     "src/content/docs/extensions/use-extensions.mdx": {
       "fragments": [
         {
           "name": "Content",
           "from": "198fbaf24231c0a4",
-          "to": "63afa869d4c1f227",
+          "to": "d9bddd77ee78b7d5",
           "before": null,
           "after": null
         }
@@ -385,7 +403,7 @@
         {
           "name": "Content",
           "from": "be99a95949f77e1b",
-          "to": "5b52646448271ef6",
+          "to": "abfcd269fa6c6bf7",
           "before": null,
           "after": null
         }
@@ -438,7 +456,7 @@
       "fragments": [
         {
           "name": "Content",
-          "from": "b765dfd109b3ad86",
+          "from": "46db67864e8ee059",
           "to": "6592f4b712ae9e20",
           "before": null,
           "after": null
@@ -607,7 +625,8 @@
     ],
     "extensions": [
       "use-extensions",
-      "build-extensions"
+      "build-extensions",
+      "extension-reference"
     ],
     "getting-started": [
       "quickstart",

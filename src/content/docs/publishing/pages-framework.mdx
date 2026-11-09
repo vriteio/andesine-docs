@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-The command copies the template into the `docs` folder, with the `@andesine/pages` and `@andesine/ui` packages pinned to the same version. It needs no account.
+The command copies the template into the `docs` folder, with exact versions of the `@andesine/pages` and `@andesine/ui` packages. It needs no account.
 
 ## Show an Andesine collection
 
@@ -99,12 +99,12 @@ A folder can also have a `meta.json` file in the Fumadocs format. `title` sets t
 GitHub Sync writes these files when you set **Navigation files** to `meta.json`, so the site shows the order and the names of your collections.
 
 <Callout type="tip">
-  When you show an Andesine collection, or sync files with GitHub Sync, add schema properties with these names to set the fields from Andesine. For example, a `Description` property sets `description`.
+  When the site shows an Andesine collection, only the properties with the keys `description`, `searchHidden`, `toc`, and `layout` set page fields. The title comes from the entry name. With GitHub Sync, all properties go into the frontmatter. Use only properties whose keys are frontmatter fields of Pages. The build stops on other keys.
 </Callout>
 
 ## Components
 
-MDX pages and Andesine content can use these components without imports: `Callout`, `Card` and `CardGrid`, `Steps` and `Step`, `Tabs` and `Tab`, `CodeGroup`, `Accordion`, `Figure`, `FileTree`, `Visibility`, and `Operation`, which shows one API operation in a guide. With the Andesine Pages extension, these components also show as views in the Andesine editor.
+MDX pages and Andesine content can use these components without imports: `Callout`, `Card` and `CardGrid`, `Steps` and `Step`, `Tabs` and `Tab`, `CodeGroup`, `Accordion`, `Figure`, `FileTree`, `Visibility`, and `Operation`, which shows one API operation in a guide. With the Andesine Pages extension, these components, except `Operation`, also show as views in the Andesine editor.
 
 ## API reference
 

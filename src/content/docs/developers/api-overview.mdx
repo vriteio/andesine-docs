@@ -41,7 +41,7 @@ Go to **Settings → API → Credentials**. You need a role with the **API keys*
 
 The key is shown once after you create it. Select **Copy key** and store it safely. To replace a key, select **Rotate key** and choose when the old key stops working: now, or after 1 hour, 24 hours, or 7 days.
 
-![The Credentials settings with a secret key and a publishable key.](../imported-image.webp)
+![The Credentials settings with a secret key and a publishable key.](./api-settings.webp)
 
 ## Current and published content
 
@@ -81,7 +81,7 @@ Responses have headers with the current state of the limits:
 
 ## Errors
 
-Errors have an HTTP status and a JSON body with a `code`, a `message`, and often `hints` that explain how to fix the request. Use the `code` in your code, not the message.
+Errors have an HTTP status and a JSON body with a `code`, a `message`, and a `data` object. `data.hints` often explains how to fix the request. Use the `code` in your code, not the message.
 
 ## Pagination
 

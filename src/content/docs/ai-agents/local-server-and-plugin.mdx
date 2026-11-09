@@ -18,7 +18,7 @@ Coding agents, such as Claude Code, Cursor, Codex, and Gemini CLI, can run the A
   </Step>
 
   <Step title="Start your agent">
-    Start the agent in the project folder. It starts the server with `npx -y andesine mcp`.
+    Start the agent in the project folder. It starts the server with `npx -y andesine mcp --workspace <id>`.
   </Step>
 </Steps>
 
@@ -43,7 +43,7 @@ codex mcp add andesine -- npx -y andesine mcp
 
 ## Options
 
-- The server uses the workspace in the `andesine.json` of the folder where the agent starts it. Use `--workspace <id>` to choose another workspace.
+- Servers added with `init --mcp` use the workspace in their `--workspace` option. Other servers, such as the plugin's server, use the workspace in the nearest `andesine.json`.
 - `--read-only` lists only the tools that read content.
 - With an API key, the server lists only the tools that the key's permissions allow.
 
@@ -56,6 +56,8 @@ In Claude Code, run:
 ```text
 /plugin install andesine --marketplace vriteio/andesine
 ```
+
+This needs Claude Code 2.1.275 or later.
 
 In Cursor, install **Andesine** from the Cursor Marketplace.
 

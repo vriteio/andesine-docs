@@ -20,7 +20,7 @@ https://api.andesine.app/mcp
 4. Select **Enable write access** if the app may create, edit, move, publish, and delete content. Without it, the app can only read.
 5. Select **Approve**.
 
-![The Connect page with the workspace picker and the Enable write access checkbox.](../imported-image.webp)
+![The Connect page with the workspace picker and the Enable write access checkbox.](./connect-page.webp)
 
 Each connection uses one workspace. To use another workspace, add the server again and choose that workspace. The app can do only what your role allows in that workspace.
 
@@ -30,11 +30,11 @@ Custom connectors can need a paid plan of the AI app. Check the documentation of
 
 <Tabs syncKey="ai-app">
   <Tab label="Claude">
-    In Claude, open **Settings → Connectors** and select **Add custom connector**. Type `Andesine` as the name and `https://api.andesine.app/mcp` as the URL, then select **Connect**.
+    In Claude, open **Customize → Connectors**, select **+ Add**, and select **Add custom connector**. Type `Andesine` as the name and `https://api.andesine.app/mcp` as the URL, then select **Continue**. Keep the sign-in settings and select **Add**. To use it in a chat, select **+**, then **Connectors**, and turn on Andesine. On Team and Enterprise plans, an owner adds the connector in **Organization settings → Connectors** first. Members then select **Connect**.
   </Tab>
 
   <Tab label="ChatGPT">
-    In ChatGPT, open **Settings → Apps & Connectors**, turn on developer mode in **Advanced settings**, and create a connector with the URL `https://api.andesine.app/mcp` and OAuth authentication.
+    In ChatGPT on the web, open **Plugins**, select **+**, and select **Add custom MCP server**. Type `Andesine` as the name and `https://api.andesine.app/mcp` as the **Server URL**, and select **OAuth** authentication. Select **I understand and want to continue**, then **Create as a plugin**. Your ChatGPT plan or workspace must allow custom MCP servers.
   </Tab>
 
   <Tab label="Cursor">

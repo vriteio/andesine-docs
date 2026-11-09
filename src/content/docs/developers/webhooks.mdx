@@ -19,7 +19,7 @@ Go to **Settings → API → Webhooks** and create a webhook. You need a role wi
 
 After you save, Andesine shows the signing secret (`whsec_...`) once. Store it in your server's secret storage.
 
-![The webhook form with the URL, the selected events, and the data access settings.](../imported-image.webp)
+![The webhook form with the URL, the selected events, and the data access settings.](./webhook-settings.webp)
 
 You can also manage webhooks with the API and the [SDK](/docs/developers/sdk/) (`client.webhooks`), and send a test event with `webhooks.sendTest`.
 
@@ -44,7 +44,7 @@ You can also manage webhooks with the API and the [SDK](/docs/developers/sdk/) (
 
 To rebuild a site after each publish, use `publishing.channel_advanced`.
 
-Each event has an `id`, a `type`, the `workspaceID`, the event `data`, and an `actor`: the member, API key, extension, or app that made the change.
+Each event has an `id`, a `type`, the time (`occurredAt`), the `workspaceID`, a `subject` (the entry, collection, or channel that changed), the event `data`, and an `actor`: the member, API key, extension, or app that made the change, or `null` for changes by Andesine.
 
 ## Verify requests
 
@@ -68,7 +68,7 @@ export async function POST(request: Request): Promise<Response> {
 }
 ```
 
-The signature covers the `webhook-id` and `webhook-timestamp` headers and the raw body, with HMAC-SHA256. Verify the raw body, not parsed JSON. Requests older than five minutes are rejected.
+The signature covers the `webhook-id` and `webhook-timestamp` headers and the raw body, with HMAC-SHA256. The signature is in the `webhook-signature` header, in the form `v1,<signature>`. Verify the raw body, not parsed JSON. Requests older than five minutes are rejected.
 
 ## Deliveries and retries
 
@@ -81,4 +81,4 @@ Select **See events** on a webhook to see its deliveries, their responses, and t
 
 ## Rotate the secret
 
-Select **Rotate secret** to get a new secret. For 24 hours, Andesine signs requests with both the old and the new secret, so you can update your server without missing events.
+Select **Rotate secret** and choose when the old secret stops working: now, or after 24 hours. During the 24 hours, Andesine signs requests with both the old and the new secret, so you can update your server without missing events.

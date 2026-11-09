@@ -3,32 +3,32 @@ title: Tools, resources, and prompts
 description: The tools, resources, and prompts of the Andesine MCP server.
 ---
 
-The remote and local Andesine MCP servers have the same tools, resources, and prompts. Your AI app chooses the tools for each request, so you normally only describe what you want, for example "Update the setup guide for the new CLI flag and publish it."
+The remote and local Andesine MCP servers have the same tools, resources, and prompts. Only the local server has `upload_image`. Your AI app chooses the tools for each request, so you normally only describe what you want, for example "Update the setup guide for the new CLI flag and publish it."
 
 ## Tools
 
-Tools that change content need write access. A read-only connection lists only the read tools.
+Tools that change content need write access. A read-only connection lists only the read tools, and only the prompts `review-entry`, `answer`, and `release-notes`. With an API key, the server also hides the resources and prompts that the key's permissions do not allow.
 
-| Tool             | What it does                                                             | Access |
-| ---------------- | ------------------------------------------------------------------------ | ------ |
-| `search`         | Searches the workspace content                                           | Read   |
-| `fetch`          | Reads an entry as MDX, as blocks, or as an outline; or one section of it | Read   |
-| `get_tree`       | Lists the collections and entries under a path                           | Read   |
-| `get_schema`     | Reads the schema fields of a collection                                  | Read   |
-| `get_migration`  | Shows the progress of a schema migration                                 | Read   |
-| `list_versions`  | Lists the versions of an entry or a schema                               | Read   |
-| `list_channels`  | Lists the publishing channels                                            | Read   |
-| `create_entry`   | Creates an entry, and the collections in its path                        | Write  |
-| `edit_entry`     | Changes parts of an entry: text, blocks, or fields                       | Write  |
-| `write_entry`    | Replaces all content of an entry                                         | Write  |
-| `move`           | Moves or renames entries and collections                                 | Write  |
-| `delete`         | Deletes an entry or a collection                                         | Write  |
-| `save_version`   | Saves a named version                                                    | Write  |
-| `revert_version` | Restores an entry or a schema to a saved version                         | Write  |
-| `set_schema`     | Changes the schema of a collection and converts its entries              | Write  |
-| `publish`        | Publishes entries or collections to a channel                            | Write  |
-| `unpublish`      | Removes entries or collections from a channel                            | Write  |
-| `upload_image`   | Uploads an image file from your computer (local server only)             | Write  |
+| Tool             | What it does                                                                                  | Access |
+| ---------------- | --------------------------------------------------------------------------------------------- | ------ |
+| `search`         | Searches the workspace content                                                                | Read   |
+| `fetch`          | Reads an entry as MDX, ProseMirror JSON, blocks, or an outline; or one or more sections of it | Read   |
+| `get_tree`       | Lists the collections and entries under a path                                                | Read   |
+| `get_schema`     | Reads the schema fields of a collection                                                       | Read   |
+| `get_migration`  | Shows the progress of a schema migration                                                      | Read   |
+| `list_versions`  | Lists the versions of an entry or a schema                                                    | Read   |
+| `list_channels`  | Lists the publishing channels                                                                 | Read   |
+| `create_entry`   | Creates an entry, and the collections in its path                                             | Write  |
+| `edit_entry`     | Changes parts of an entry: text, blocks, or fields                                            | Write  |
+| `write_entry`    | Replaces all content of an entry                                                              | Write  |
+| `move`           | Moves or renames entries and collections                                                      | Write  |
+| `delete`         | Deletes an entry or a collection                                                              | Write  |
+| `save_version`   | Saves a version of an entry, with an optional name                                            | Write  |
+| `revert_version` | Restores an entry or a schema to a saved version                                              | Write  |
+| `set_schema`     | Changes the schema of a collection and converts its entries                                   | Write  |
+| `publish`        | Publishes entries or collections to a channel                                                 | Write  |
+| `unpublish`      | Removes entries or collections from a channel                                                 | Write  |
+| `upload_image`   | Uploads an image file from your computer (local server only)                                  | Write  |
 
 The AI app edits entries in MDX. Edits keep the changes that people make at the same time in other parts of the entry.
 

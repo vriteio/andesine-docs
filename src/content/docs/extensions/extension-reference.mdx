@@ -1,0 +1,150 @@
+---
+title: Extension reference
+description: Views, element views, pages, panels, host actions, block actions,
+  dialogs, and menus for extension authors.
+---
+
+This page describes what the views of an extension can do. To create a project, see [Build extensions](/docs/extensions/build-extensions/).
+
+## Views
+
+Views are Solid components in `src/views.tsx`. The default export of that file is `defineViews`, and its `Views` type gives the names of the views to the manifest. `andesine.config.ts` imports only that type and refers to each view with `viewRefs`. The build refuses a config that imports view code as a value.
+
+Views run in a sandbox and have no access to the page. Andesine renders its own components from the view tree. Props of components must be JSON values. A function prop becomes a callback that Andesine calls with plain values.
+
+A view must accept the props of its contribution. For example, a `collection` panel receives `{ collectionID, entryID?, publishingCollectionID?, pageID? }`. A missing, renamed, or incorrect view is a type error.
+
+## Components
+
+Import components from `@andesine/extensions/solid`. Only these components render:
+
+| Group                | Components                                                                                                                                                                              |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Layout               | `Stack`, `Grid`, `Box`, `Divider`, `ScrollArea`, `Section`, `Setting`, `SaveBar`                                                                                                        |
+| Text                 | `Text`, `Heading`, `Code`, `Link`, `Badge`, `Icon`, `TimeAgo`, `Callout`                                                                                                                |
+| Controls             | `Button`, `IconButton`, `Input`, `Textarea`, `Select`, `Combobox`, `MultiSelect`, `Checkbox`, `Toggle`, `ToggleGroup`, `ColorInput`, `ImageInput`, `IconPicker`, `LinkInput`, `Tooltip` |
+| Lists and navigation | `List`, `Card`, `Tree`, `Navigation`, `Item`, `ItemGroup`, `ItemDetails`, `Tabs`, `Tab`, `Disclosure`, `Steps`, `Step`, `Figure`, `CodeBlock`                                           |
+| Overlays             | `Dialog`, `Menu`, `MenuTrigger`, `MenuItem`, `MenuGroup`, `MenuSeparator`, `MenuContent`                                                                                                |
+| Loading              | `Spinner`, `Skeleton`                                                                                                                                                                   |
+| Editor               | `ContentSlot`, `BlockArea`, `Element`, `Block`                                                                                                                                          |
+
+## Element views
+
+An element view renders an element of the document, such as `<Accordion>`. It receives `{ element, props, index }`. `index` is the position of the element among its siblings with the same name, for example to number steps.
+
+`ContentSlot` shows the editable content of the element. Andesine keeps the content when the slot is hidden. Use `contentClass` to put utility classes on the content, for example `<ContentSlot contentClass="grid gap-4 @lg:grid-cols-2" />` for a grid of cards.
+
+### Props
+
+Declare the props of an element in `props`, as an array of fields. Each field has a `name`, a type, and optionally a `title`, `description`, and `default`:
+
+- Strings, with an `input`, `textarea`, `icon`, or `link` control.
+- String options, with a `select` or `toggle` control.
+- Numbers and booleans.
+
+A new element gets the default values. Andesine shows a form for the props in the menu of the element. The view only renders them. `props` also accepts one JSON Schema object, or a Zod object with `.meta()`.
+
+### Allowed content
+
+Use `accepts` to set which blocks the content of an element can hold, for example `{ elements: ["Tab"] }` or `{ blocks: ["codeBlock"] }`. Use `rejects` to block some of them, for example `{ elements: ["Accordion"] }`. The editor shows only accepted blocks in the slash menu, refuses edits that add other blocks, and shows a warning next to content that does not fit.
+
+Give a view a `category`, such as `"Docs"`, to show its elements in their own group of the slash menu.
+
+### Child elements
+
+A view can also draw its child elements, for example a tab bar for `Tabs`. List them in `children`, and put an `<Element tag>` template directly in the `ContentSlot`:
+
+```tsx
+<ContentSlot>
+  <Element tag="Tab">
+    {(tab) => (
+      <Box class={tab.index === selected() ? "" : "hidden"}>
+        <ContentSlot />
+      </Box>
+    )}
+  </Element>
+</ContentSlot>
+```
+
+The editor keeps such child elements inside their parent element. To add a child, call `useEditor().append(block)`.
+
+### Block controls
+
+In an element view, the drag handle, the block menu, and box selection work only for the element itself. Use `<ContentSlot controls>` to turn them on for the blocks in the content. When a view draws a block in its own UI, for example a tab in a tab bar, put `<BlockArea block={key}>` around that UI and turn on the behaviours that you need:
+
+| Option           | What it does                                                   |
+| ---------------- | -------------------------------------------------------------- |
+| `menu`           | A right click selects the block and opens its menu.            |
+| `draggable`      | Dragging the UI moves the block.                               |
+| `controls`       | The drag handle and the block menu show when you hover the UI. |
+| `selectable`     | Box selection and the arrow keys can select the block.         |
+| `onActivate`     | Enter or Space runs your action, for example to show a tab.    |
+| `marksSelection` | The view shows the selection itself, with `blockSelected`.     |
+| `droppable`      | The block is a drop target, for example a card in a grid.      |
+
+## Pages
+
+A page is a view in the main area, for settings or tools that are too large for a panel. Declare pages in `pages` with `{ id, name, icon, context, view }`. `context` is `workspace`, `collection`, or `entry`. An extension can have up to 5 pages.
+
+- Workspace pages are in the sidebar.
+- Collection and entry pages are in the menu of the collection or entry. A collection page receives `{ collectionID }`, and an entry page receives `{ entryID }`.
+- `openPage(id, context?)` opens a page from a view, for example `openPage("site", { collectionID })`.
+
+### Sub-pages
+
+Split a large page into sub-pages with `parent`, the ID of a top-level page with the same `context`. An extension can have up to 20 sub-pages. Sub-pages are not in menus, so open them from the parent page with `openPage`.
+
+### Conditions
+
+Use `when` to set when a page is available. Andesine checks the condition without running the extension:
+
+- `publishing`: publishing is on for the collection, or for a collection around it.
+- `storage`: a key exists in the storage of the extension. The key can contain `{collectionID}`, `{entryID}`, or `{publishingCollectionID}`.
+
+```ts
+when: { storage: { key: "mapping:{publishingCollectionID}", exists: true } }
+```
+
+So one task can have different pages, for example "Setup" before a collection is mapped and "Mapping" after. Menus and pages update when the storage changes, also when your backend writes to it. In a view, use `storage.onChange()` to load data again after a change.
+
+## Panels
+
+A right panel with the `collection` context receives `{ collectionID, entryID? }`. A panel with the `entry` context receives `{ collectionID, entryID }`. Panels and collection and entry pages also receive `publishingCollectionID`: the nearest collection with publishing on. While a page of the extension is open, panels also receive its `pageID`.
+
+Keep panels short. Show status as `Item` rows in an `ItemGroup`, and link to pages with `Navigation`.
+
+## Host actions
+
+These functions ask Andesine to do an action for the extension:
+
+| Function                          | Action                                                                        |
+| --------------------------------- | ----------------------------------------------------------------------------- |
+| `copyText(text)`                  | Copies text to the clipboard.                                                 |
+| `downloadFile(name, text, type?)` | Downloads a file.                                                             |
+| `openURL(url)`                    | Opens a URL. The member must confirm URLs that the manifest does not declare. |
+| `openPage(id, context?)`          | Opens a page of the extension.                                                |
+| `notify(text, type?)`             | Shows a short notification with the name of the extension.                    |
+
+Call `copyText`, `downloadFile`, `openURL`, and `openPage` from an interaction, such as the `onClick` of a button. If not, they fail with `ExtensionRequestError` and the code `user_interaction_required`. `notify` does not need an interaction.
+
+## Block actions and edits
+
+A block action view receives `{ blocks }`: the selected blocks as editor JSON. `useEditor()` gives:
+
+- `replace(content)`, `insertAfter(content)`, and `close()` in block action views.
+- `setElementProps(props)` in element views. Call it from an interaction.
+
+The content must be blocks that are allowed at the selection. An edit fails if the selected blocks changed in the meantime. An element is `{ type: "element", attrs: { name, props }, content }`.
+
+The root of the view sets the UI of the action:
+
+- A view that renders nothing runs without UI. The block menu shows a spinner until the view calls `close()`. Andesine stops the action after 30 seconds.
+- A `<Dialog>` at the root opens a dialog.
+- A `<Menu>` at the root opens a menu in the place of the block menu.
+
+## Dialogs and menus
+
+`Dialog` and `Menu` work in all views.
+
+- A dialog shows while it is rendered. It calls `onClose` when the member presses Escape or clicks outside it, unless `dismissible` is false. A dialog has no close button, so give it a cancel action. Outside block actions, render a dialog only after an interaction.
+- A menu is a dropdown menu. Put its trigger in `MenuTrigger`. Use `contextMenu` to open it with a right click. Its items are `MenuItem`, `MenuGroup`, `MenuSeparator`, and `MenuContent`. Nested items make a submenu. `opened` and `onOpenChange` control the menu.

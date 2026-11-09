@@ -28,7 +28,7 @@ You can publish at different levels:
 
 The publish menu of an entry shows its status: **Published**, **Pending changes**, or **Not published**, and the **Assigned version** on the channel.
 
-![The publish menu of an entry with the Pending changes status and the Publish current button.](../imported-image.webp)
+![The publish menu of an entry with the Pending changes status and the Publish current button.](./publishing-menu.webp)
 
 ## Review pending changes
 
@@ -56,10 +56,10 @@ Each workspace has the **Published** channel. Add more channels to publish diffe
 
 Go to **Settings → Publishing → Channels** and select **Create channel**. Each channel has a code, such as `staging`, that you use in the API. Select **Copy channel code** to copy it.
 
-To switch the channel that the explorer and the publishing panel show, use the **Channel** menu at the top of the explorer.
+To switch the channel that the explorer and the publishing panel show, open the menu at the top of the explorer and select **Channel: \<name>**. This item shows only when the workspace has more than one channel.
 
 When you delete a channel, all content assigned to it is removed from that channel. You cannot delete the **Published** channel.
 
 ## Publishable keys
 
-Websites read published content with a publishable key. Go to **Settings → Publishing → Sites** to create one. A publishable key can only read and search published content, so you can use it in browser code. See [API overview](/docs/developers/api-overview/).
+Websites read published content with a publishable key. Go to **Settings → Publishing → Sites** to create one. A publishable key can only read and search published content, and get AI answers when you allow them, so you can use it in browser code. See [API overview](/docs/developers/api-overview/).

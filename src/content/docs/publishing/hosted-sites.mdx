@@ -6,7 +6,7 @@ description: Publish a collection as a documentation site on andesine.page or
 
 The **Andesine Pages** extension turns a collection into a documentation site. Andesine builds and hosts the site, and updates it each time you publish. Sites have navigation, search, AI answers, and pages that AI agents can read.
 
-![A hosted documentation site with navigation on the left, a page in the middle, and search at the top.](../imported-image.webp)
+![A hosted documentation site with navigation on the left, a page in the middle, and search at the top.](./hosted-site.webp)
 
 ## Create a site
 
@@ -20,7 +20,7 @@ The **Andesine Pages** extension turns a collection into a documentation site. A
   </Step>
 
   <Step title="Create the site">
-    Choose a subdomain and the channel that the site shows, then select **Create site**. The site is at `https://<subdomain>.andesine.page`.
+    In **Address**, type a subdomain of 3 to 40 letters, digits, or hyphens. In **Source**, choose the channel that the site shows. Then select **Create site**. The site is at `https://<subdomain>.andesine.page`.
   </Step>
 
   <Step title="Publish">
@@ -35,11 +35,11 @@ The **Andesine Pages** extension turns a collection into a documentation site. A
 - The site shows only published content from its channel. Edits show after you publish them.
 - Elements such as callouts, cards, steps, and tabs show as site components. The extension also shows these components in the editor, so they look the same while you write. See [Elements](/docs/writing/elements/).
 
-The site builds each time you publish to its channel. The **Builds** list shows the last five builds and their status. Select **Rebuild** to build the site again.
+The site builds each time you publish to its channel. The **Builds** page shows the last five builds and their status. Select **Rebuild** to build the site again.
 
 ## Site settings
 
-Open the **Site** page of the collection to change the settings:
+The **Site** page of the collection is the overview of the site. To change the settings, open the **General**, **Appearance**, **Navigation**, and **Content and AI** pages of the site:
 
 | Setting                 | What it controls                                                                   |
 | ----------------------- | ---------------------------------------------------------------------------------- |
@@ -59,7 +59,7 @@ Select **Open site** to see the site.
 
 On the Pro plan, you can serve the site from your own domain, such as `docs.example.com`.
 
-1. In the **Domains** section, select **Add a domain** and type the domain.
+1. On the **Domains** page, select **Add a domain** and type the domain.
 2. Add the CNAME and TXT records that it shows at your DNS provider.
 3. Wait until the status changes from **Waiting for DNS** to **Active**.
 

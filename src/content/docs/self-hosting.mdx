@@ -24,7 +24,7 @@ Andesine is open source. You can run it on your own server with Docker Compose. 
   </Step>
 
   <Step title="Start">
-    Run `docker compose up -d`. Compose builds the images, starts PostgreSQL, Redis, and Typesense, and runs the database migrations.
+    Run `docker compose up -d`. Compose builds the images, starts PostgreSQL, Redis, Typesense, and the worker, and runs the database migrations.
   </Step>
 
   <Step title="Sign up">
@@ -46,6 +46,7 @@ The web app listens on port `3000`, and the API on port `3333`.
 | `ENCRYPTION_KEYS`             | Keys that encrypt stored secrets, as JSON: `[{"id":"key-1","key":"<key>"}]`. Create each key with `openssl rand -base64 32`. |
 | `SENDER_EMAIL`, `SENDER_NAME` | The sender of emails                                                                                                         |
 | `RESEND_API_KEY`, or `SMTP_*` | The email service                                                                                                            |
+| `TYPESENSE_API_KEY`           | A random secret for search                                                                                                   |
 
 <Callout type="warning">
   Back up `ENCRYPTION_KEYS` with your database. Without the keys, Andesine cannot read the stored secrets, such as webhook secrets. To change keys, add a new key first in the list and keep the old keys.
@@ -59,14 +60,18 @@ The web app listens on port `3000`, and the API on port `3333`.
 | `OPENAI_API_KEY`, `OPENAI_BASE_URL`                    | Semantic search, AI answers, and image analysis                                  |
 | `GOOGLE_CLIENT_*`, `GITHUB_CLIENT_*`                   | Sign-in with Google and GitHub                                                   |
 | `PUBLIC_EXTENSIONS_ENABLED`, `EXTENSIONS_REGISTRY_URL` | Extensions from a registry, such as `https://extensions.andesine.app/index.json` |
-| `VERSION_RETENTION_DAYS`                               | How long automatic versions are kept                                             |
+| `PRO_VERSION_RETENTION_DAYS`                           | How many days automatic versions are kept; the default is 30                     |
 | `ASSET_MAX_UPLOAD_BYTES`                               | The maximum image size                                                           |
+
+To show the Google and GitHub sign-in buttons, also set `PUBLIC_GOOGLE_AUTH_ENABLED=true` and `PUBLIC_GITHUB_AUTH_ENABLED=true` for the web app. These are build arguments, like the other `PUBLIC_*` values. Without them, members sign in with email codes and passkeys.
 
 `.env.example` describes all settings. Set `PUBLIC_*` values before you build, because they are built into the web app.
 
 ## HTTPS
 
 Put a reverse proxy, such as Caddy or nginx, in front of the app and the API, and serve both over HTTPS. Set `TRUST_PROXY` to the address of the proxy, so that the API sees the real addresses of visitors.
+
+Do not open the ports of PostgreSQL, Redis, and Typesense to the internet. Block them with a firewall.
 
 ## Use the CLI and the SDK
 

@@ -6,19 +6,20 @@ description: Write with blocks, Markdown shortcuts, links to entries, tables,
 
 The editor is a block editor. Each paragraph, heading, list, table, image, or component is a block. Andesine saves your changes as you type, and other editors see them at once.
 
-![An entry open in the editor, with the slash menu open below a paragraph.](../imported-image.webp)
+![An entry open in the editor, with the slash menu open below a paragraph.](./slash-menu.webp)
 
 ## Add blocks
 
 Type `/` at the start of an empty line to open the slash menu. Type to filter it, then press Enter.
 
-| Group     | Blocks                                                      |
-| --------- | ----------------------------------------------------------- |
-| Headings  | Heading 1 to Heading 6                                      |
-| Lists     | Bullet list, Ordered list, Task list                        |
-| Blocks    | Blockquote, Horizontal rule, Code block, Table, Image       |
-| Elements  | Element, and the components that your extensions add        |
-| Structure | Fragments and optional properties, in entries with a schema |
+| Group                          | Blocks                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| Headings                       | Heading 1 to Heading 6                                                                                        |
+| Lists                          | Bullet list, Ordered list, Task list                                                                          |
+| Blocks                         | Blockquote, Horizontal rule, Code block, Element, Image (entries only), Table                                 |
+| Component categories, Elements | The components that your extensions add, in groups by their category, or in **Elements**                      |
+| Structure, Property            | Fragment, and the property types. Only at the top level of entries without a schema, and in the schema editor |
+| Optional fields                | The optional fields of the schema. Only in entries with a schema, outside a fragment                          |
 
 ## Markdown shortcuts
 
@@ -50,11 +51,11 @@ Drag a block by its handle to move it.
 
 ## Links
 
-Select text and press ⌘K, or select **Link** in the formatting menu. Then search for an entry, or type a URL. Links can use `https`, `http`, or `mailto`.
+Select text, then select **Link** in the formatting menu. Then search for an entry, or type a URL. Links can use `https`, `http`, or `mailto`.
 
 A link to an entry stays correct when you rename or move the entry. If a linked entry is deleted, or you cannot read it, the link shows **Deleted or unreadable entry**.
 
-Select a link to **Copy link**, **Edit link**, or **Remove link**.
+Move the pointer over a link, or put the cursor in it, to see **Copy link** and **Edit link**. To remove the link, select **Edit link**, then **Remove link**.
 
 ## Code blocks
 

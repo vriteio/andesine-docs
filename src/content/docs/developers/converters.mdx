@@ -66,6 +66,37 @@ Markdown, MDX, and Markdoc support frontmatter. HTML and plain text do not. Elem
 
 In MDX, elements stay components, such as `<Callout type="tip">`. In Markdoc, they become tags. In HTML, they become `div` blocks with their attributes as data. To write an element in your own way, for example as your site's component, add a custom handler for it.
 
+A handler gets the element and a context, and returns the output. It can also return an array, or `null` to omit the element. Handlers for an exact name come before the `"*"` handler, and your handlers come before the built-in ones. For example, write `Callout` elements as your site's `Notice` component in MDX:
+
+```ts
+import { createMDXConverter, mdxAdapter } from "@andesine/converters/mdx";
+
+const converter = createMDXConverter({
+  encode: {
+    elements: {
+      Callout: (node, context) =>
+        mdxAdapter.encode({ ...node, attrs: { ...node.attrs, name: "Notice" } }, context)
+    }
+  }
+});
+```
+
+To convert `Notice` back to `Callout` on import, add a decode handler:
+
+```ts
+import { element } from "@andesine/converters";
+
+const converter = createMDXConverter({
+  decode: {
+    elements: {
+      Notice: async (node, context) => element("Callout", {}, await context.children(node.children))
+    }
+  }
+});
+```
+
+Use `encode.nodes` and `encode.marks` for other node and mark types. In a handler, call `context.encode` or `context.decode` to convert child content with your handlers.
+
 ## Heading anchors
 
 `getHeadingAnchors(document)` returns the anchor ID of each heading. Search results and AI answer sources use the same anchors, so links from search go to the right heading. `toHTML` adds these IDs to the headings.

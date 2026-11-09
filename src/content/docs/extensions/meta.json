@@ -2,6 +2,7 @@
   "title": "Extensions",
   "pages": [
     "use-extensions",
-    "build-extensions"
+    "build-extensions",
+    "extension-reference"
   ]
 }

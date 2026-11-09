@@ -40,7 +40,7 @@ export default defineExtension({
   icon: "i-lucide:hand",
   apiVersion: 1,
   permissions: ["read:entries"],
-  panels: [{ id: "hello", side: "right", name: "Hello", icon: "i-lucide:hand", view: View.Hello }]
+  panels: [{ id: "hello", side: "right", context: "entry", name: "Hello", icon: "i-lucide:hand", view: View.Hello }]
 });
 ```
 
@@ -75,7 +75,7 @@ export type Views = typeof views;
 export default views;
 ```
 
-An element view gets the element's props and shows its editable content with `ContentSlot`. Views can also copy text, download files, open URLs, open pages, and show notifications.
+An element view gets the element's props and shows its editable content with `ContentSlot`. Views can also copy text, download files, open URLs, open pages, and show notifications. For all view features, see the [Extension reference](/docs/extensions/extension-reference/).
 
 ## API and backend
 
@@ -93,14 +93,30 @@ const response = await backend.fetch("/publish", { method: "POST" });
 
 ## Develop locally
 
-Extensions are developed against a local Andesine instance. See [Self-hosting](/docs/self-hosting/) to run one, and set `EXTENSIONS_DEVELOPMENT_ENABLED=true` on its backend.
+You develop extensions against a local Andesine instance. The hosted app has no development mode. See [Self-hosting](/docs/self-hosting/) to run an instance, and set these variables on both the backend and the web app:
+
+| Variable                         | Value  |
+| -------------------------------- | ------ |
+| `PUBLIC_EXTENSIONS_ENABLED`      | `true` |
+| `EXTENSIONS_DEVELOPMENT_ENABLED` | `true` |
+
+If your extension has webhooks and its backend runs on your computer, also let the backend send webhooks over HTTP to it:
+
+```sh
+WEBHOOK_ALLOW_HTTP=true
+WEBHOOK_DESTINATION_EXCEPTIONS=[{"origin":"http://localhost:8787","addresses":["127.0.0.1","::1"]}]
+```
+
+Change the origin to the address of your extension's backend. HTTP works only when both settings are set.
+
+API keys cannot develop extensions, so sign in the CLI to the local instance:
 
 ```sh
 npx andesine --base-url http://localhost:43211 auth login
 npx andesine --base-url http://localhost:43211 --workspace ws_... extensions dev
 ```
 
-`extensions dev` installs the extension for you only, and rebuilds and reloads it on each change. If a change asks for more permissions, approve it in **Settings → Extensions**. To send a sample event to a webhook, run `npx andesine extensions test-event <webhook> <type>`. Run `extensions dev --remove` to uninstall it.
+Start your extension's backend first, if it has one. `extensions dev` installs the extension for you only, and rebuilds and reloads it on each change. If a change asks for more permissions, approve it in **Settings → Extensions**. To send a sample event to a webhook, run `npx andesine extensions test-event <webhook> <type>`. Run `extensions dev --remove` to uninstall it.
 
 `npx andesine extensions build` checks the manifest and builds the extension into `dist/`.
 
@@ -122,6 +138,6 @@ Extensions are published in the public registry at `extensions.andesine.app`, fr
   </Step>
 </Steps>
 
-Published versions never change. To fix a version, publish a new one. To withdraw a version, add it to `registry/revocations.json` with a replacement version; workspaces move to the replacement.
+Published versions never change. To fix a version, publish a new one. To withdraw a version, add it to `registry/revocations.json` with a reason, and optionally a replacement version. Workspaces move to the newest version or to the replacement. If there is neither, the extension is disabled.
 
 To rotate a backend key, add the new key with `keys generate`, deploy the backend with it, and then remove the old key with `keys revoke <key-id>` in a second pull request.
