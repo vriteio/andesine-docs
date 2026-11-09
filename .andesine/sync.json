@@ -626,9 +626,9 @@
       "pages-framework"
     ],
     "workspace-administration": [
-      "plans-and-billing",
       "members-and-invitations",
       "roles-and-permissions",
+      "plans-and-billing",
       "account-and-security"
     ],
     "writing": [

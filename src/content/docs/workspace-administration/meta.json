@@ -1,9 +1,9 @@
 {
   "title": "Workspace administration",
   "pages": [
-    "plans-and-billing",
     "members-and-invitations",
     "roles-and-permissions",
+    "plans-and-billing",
     "account-and-security"
   ]
 }
