@@ -12,7 +12,7 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@andesine/pages": "0.9.0",
+    "@andesine/pages": "0.10.0",
     "@andesine/ui": "0.9.0",
     "@ark-ui/solid": "5.38.0",
     "@astrojs/mdx": "8.0.1",
