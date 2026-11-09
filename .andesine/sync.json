@@ -235,6 +235,24 @@
         }
       ]
     },
+    "src/content/docs/getting-started/index.mdx": {
+      "fragments": [
+        {
+          "name": "Content",
+          "from": "bd17775e70909573",
+          "to": "3bbe6cd52248838e",
+          "before": null,
+          "after": null
+        }
+      ],
+      "properties": [
+        {
+          "key": "description",
+          "label": "Description",
+          "after": null
+        }
+      ]
+    },
     "src/content/docs/getting-started/quickstart.mdx": {
       "fragments": [
         {
@@ -252,25 +270,6 @@
           "after": null
         }
       ]
-    },
-    "src/content/docs/index.mdx": {
-      "fragments": [
-        {
-          "name": "Content",
-          "from": "bd17775e70909573",
-          "to": "3bbe6cd52248838e",
-          "before": null,
-          "after": null
-        }
-      ],
-      "properties": [
-        {
-          "key": "description",
-          "label": "Description",
-          "after": null
-        }
-      ],
-      "rootTitle": "Introduction"
     },
     "src/content/docs/organizing-content/collections-and-entries.mdx": {
       "fragments": [
@@ -607,7 +606,6 @@
       "ai-agents",
       "developers",
       "extensions",
-      "index",
       "self-hosting"
     ],
     "ai-agents": [
