@@ -578,5 +578,65 @@
         }
       ]
     }
+  },
+  "folders": {
+    "": [
+      "getting-started",
+      "writing",
+      "organizing-content",
+      "publishing",
+      "workspace-administration",
+      "ai-agents",
+      "developers",
+      "extensions",
+      "index",
+      "self-hosting"
+    ],
+    "ai-agents": [
+      "connect-an-ai-app",
+      "local-server-and-plugin",
+      "tools-resources-and-prompts"
+    ],
+    "developers": [
+      "api-overview",
+      "sdk",
+      "cli",
+      "content-types",
+      "webhooks",
+      "converters"
+    ],
+    "extensions": [
+      "use-extensions",
+      "build-extensions"
+    ],
+    "getting-started": [
+      "quickstart",
+      "core-concepts"
+    ],
+    "organizing-content": [
+      "collections-and-entries",
+      "schemas",
+      "versions",
+      "search-and-ask-ai"
+    ],
+    "publishing": [
+      "publishing-and-channels",
+      "hosted-sites",
+      "github-sync",
+      "pages-framework"
+    ],
+    "workspace-administration": [
+      "plans-and-billing",
+      "members-and-invitations",
+      "roles-and-permissions",
+      "account-and-security"
+    ],
+    "writing": [
+      "editor",
+      "images",
+      "elements",
+      "collaboration-and-offline",
+      "keyboard-shortcuts"
+    ]
   }
 }

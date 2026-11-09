@@ -33,29 +33,37 @@ The **GitHub Sync** extension keeps a collection and a folder of Markdown or MDX
 
 ## Mapping settings
 
-| Setting          | Description                                                                                                                  |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Source           | The channel. Publishes to it go to GitHub, and pushes from GitHub are published to it.                                       |
-| Repository       | A repository that the GitHub App can access. Private repositories need the Pro plan.                                         |
-| Branch           | The branch that the sync reads and commits to.                                                                               |
-| Directory        | The folder of the files, such as `docs` or `src/content/docs`. Empty for the repository root.                                |
-| Matching files   | For the first sync: keep the GitHub files or the Andesine entries when both exist.                                           |
-| New files        | The format of files for entries created in Andesine: MDX or Markdown.                                                        |
-| Links            | How links between files are written: file paths (`./setup.mdx`) or site URLs (`../setup/`).                                  |
-| Include, Exclude | Glob patterns that select or skip files in the directory.                                                                    |
-| Images           | Where images are committed (one folder or next to their entries), how files link them, and the format (as uploaded or WebP). |
+| Setting          | Description                                                                                                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Source           | The channel. Publishes to it go to GitHub, and pushes from GitHub are published to it.                                                         |
+| Repository       | A repository that the GitHub App can access. Private repositories need the Pro plan.                                                           |
+| Branch           | The branch that the sync reads and commits to.                                                                                                 |
+| Directory        | The folder of the files, such as `docs` or `src/content/docs`. Empty for the repository root.                                                  |
+| Matching files   | For the first sync: keep the GitHub files or the Andesine entries when both exist.                                                             |
+| New files        | The format of files for entries created in Andesine: MDX or Markdown.                                                                          |
+| Links            | How links between files are written: file paths (`./setup.mdx`) or site URLs (`../setup/`).                                                    |
+| Navigation files | None, or a `meta.json` file in each folder with the collection name and the order of its items (Fumadocs format, used by the Pages framework). |
+| Include, Exclude | Glob patterns that select or skip files in the directory.                                                                                      |
+| Images           | Where images are committed (one folder or next to their entries), how files link them, and the format (as uploaded or WebP).                   |
 
 ## How files map to entries
 
 - Each folder is a collection, and each file is an entry.
 - The title and the properties are in the frontmatter of the file. Properties use the keys from the API, such as `releaseDate`.
 - An `index` file is the `index` entry of its folder. Its title is the name of the collection.
-- The frontmatter field `order` sets the position of an entry in its collection.
+- The frontmatter field `order` sets the position of an entry in its collection, in folders where files already use it.
 - Elements are MDX components, such as `<Callout>`.
 - Links between entries become links between files, in the format that you chose.
 - Images are committed as files and linked from the files.
 
 Files stay standard Markdown or MDX, so other tools can read them. The sync keeps what files cannot hold, such as fragment boundaries, in `.andesine/sync.json` at the repository root. Do not edit that file.
+
+## Order of collections and entries
+
+The sync keeps the order of each collection's items from the explorer:
+
+- `.andesine/sync.json` always records the order of each folder. Only the first sync of a new mapping uses it, when the collection has no order of its own. After that, the order in Andesine stays the source of truth.
+- With **Navigation files** set to `meta.json`, each folder gets a `meta.json` file with the collection name as `title` and the items in order as `pages`. The sync writes a file only when it changes. When you edit a `meta.json` file on GitHub, the push sets the order of the items and the name of the collection in Andesine. Items that are not in the list come after the others.
 
 ## The first sync
 

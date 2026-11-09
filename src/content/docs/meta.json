@@ -1,0 +1,15 @@
+{
+  "title": "Docs",
+  "pages": [
+    "getting-started",
+    "writing",
+    "organizing-content",
+    "publishing",
+    "workspace-administration",
+    "ai-agents",
+    "developers",
+    "extensions",
+    "index",
+    "self-hosting"
+  ]
+}

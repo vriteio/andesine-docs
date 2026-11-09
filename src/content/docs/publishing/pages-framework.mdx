@@ -87,6 +87,17 @@ Each `.md` or `.mdx` file is one page. The file path gives the URL and the place
 
 Pages can set these frontmatter fields: `title` (required), `description`, `slug`, `navigationLabel`, `navigationHidden`, `searchHidden`, `order`, `toc`, `layout` (`docs` or `wide`), and `updatedAt`. The build stops on an unknown field, or when two pages have the same URL.
 
+A folder can also have a `meta.json` file in the Fumadocs format. `title` sets the label of the folder in the navigation, and `pages` lists the file names without extension and the subfolder names in order. Items that are not in the list come after it and sort as usual. A `meta.json` file in the root of the source orders the top level. The build stops when a `meta.json` file is not valid JSON, or when `pages` has a name that is not in the folder.
+
+```json
+{
+  "title": "AI agents",
+  "pages": ["connect-an-ai-app", "local-server-and-plugin"]
+}
+```
+
+GitHub Sync writes these files when you set **Navigation files** to `meta.json`, so the site shows the order and the names of your collections.
+
 <Callout type="tip">
   When you show an Andesine collection, or sync files with GitHub Sync, add schema properties with these names to set the fields from Andesine. For example, a `Description` property sets `description`.
 </Callout>
