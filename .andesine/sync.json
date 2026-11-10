@@ -235,12 +235,12 @@
         }
       ]
     },
-    "src/content/docs/getting-started/index.mdx": {
+    "src/content/docs/getting-started/introduction.mdx": {
       "fragments": [
         {
           "name": "Content",
           "from": "bd17775e70909573",
-          "to": "3bbe6cd52248838e",
+          "to": "ad868917e5cfbe9f",
           "before": null,
           "after": null
         }
@@ -348,7 +348,7 @@
         {
           "name": "Content",
           "from": "5f125b2db60f0874",
-          "to": "bd3423870cbd8073",
+          "to": "2a0a4b584b76705d",
           "before": null,
           "after": null
         }
@@ -627,6 +627,7 @@
       "extension-reference"
     ],
     "getting-started": [
+      "introduction",
       "quickstart",
       "core-concepts"
     ],
