@@ -75,5 +75,5 @@ agents read (the page URL with `index.md`, and `llms-full.txt`).
 
 ## Checks
 
-Run `npm run check` and `npm run build` after changes. The build checks the
+Run `pnpm check` and `pnpm build` after changes. The build checks the
 frontmatter, the URLs, and the API operations that pages embed.

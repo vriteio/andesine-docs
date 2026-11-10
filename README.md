@@ -8,6 +8,6 @@ GitHub Sync keeps a copy in `src/content/docs`, and each publish pushes a commit
 site. Edit the content in Andesine.
 
 ```sh
-npm install
-npm run build
+pnpm install
+pnpm build
 ```
