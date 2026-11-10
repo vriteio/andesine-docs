@@ -40,8 +40,12 @@ export default defineConfig({
     { id: "reference", label: "API reference", icon: "i-lucide:braces", sources: ["api"] }
   ],
   sources: [
-    // GitHub Sync writes the Andesine docs collection to this directory.
-    { id: "docs", type: "files", directory: "src/content/docs" },
+    {
+      id: "docs",
+      type: "andesine",
+      collection: "coll_5lYvYOrQq6tCJ6ZeMSExV1",
+      publicKey: "adn_pk_Q2YgNFMXFfyoRhLqMh41UaKx51tbO9Gx1EZOZ9LF8Jb"
+    },
     { id: "api", type: "openapi", spec: "https://api.andesine.app/openapi.json", mount: "/api/" }
   ]
 });
