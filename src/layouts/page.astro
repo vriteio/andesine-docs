@@ -3,6 +3,7 @@ import type { PageContext } from "@andesine/pages";
 import nunito from "@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2?url";
 import { PageScrollShadow } from "../components/effects/page-scroll-shadow";
 import { PageScrollbar } from "../components/effects/page-scrollbar";
+import { Analytics } from "../components/shared/analytics";
 import Footer from "../components/layout/footer.astro";
 import { GroupLabel } from "../components/layout/group-label";
 import Header from "../components/layout/header.astro";
@@ -186,6 +187,7 @@ const stickyClass = hasTabs ? "top-26 h-[calc(100dvh-6.5rem)]" : "top-16 h-[calc
       }
     </div>
     <PageScrollbar client:idle />
+    <Analytics client:load />
     <MobileNavigation
       client:media="(max-width: 767.9px)"
       page={{ site, links: page.links, navigation: page.navigation }}
